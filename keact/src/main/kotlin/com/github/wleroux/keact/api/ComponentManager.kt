@@ -12,7 +12,7 @@ object ComponentManager {
         component.componentWillUnmount()
     }
 
-    fun <State, Properties> mount(type: KClass<Component<State, Properties>>, parentComponent: Component<*, *>?, initialProperties: Properties): Component<State, Properties> {
+    fun <State, Properties> mount(type: KClass<out Component<State, Properties>>, initialProperties: Properties, parentComponent: Component<*, *>? = null): Component<State, Properties> {
         val component = type.java.newInstance()
 
         component.componentWillMount()
@@ -21,19 +21,21 @@ object ComponentManager {
         component.state = component.nextState ?: component.state
         component.componentDidMount()
 
+        update(component, initialProperties, true)
+
         return component
     }
 
     fun <State, Properties> update(component: Component<State, Properties>, nextProperties: Properties, forceUpdate: Boolean = false) {
-        @Suppress("UNCHECKED_CAST")
         fun <NodeState, NodeProperties> nodeComponent(node: Node<NodeState, NodeProperties>, prev: Component<*, *>? = null, parent: Component<*, *>? = null): Component<NodeState, NodeProperties> {
             val reuseComponent = if (prev != null) prev::class == node.type else false
             val nodeComponent: Component<NodeState, NodeProperties> = if (reuseComponent) {
+                @Suppress("UNCHECKED_CAST")
                 prev!! as Component<NodeState, NodeProperties>
             } else {
-                mount(node.type, parent, node.props)
+                mount(node.type, node.properties, parent)
             }
-            update(nodeComponent, node.props, !reuseComponent)
+            update(nodeComponent, node.properties, !reuseComponent)
             return nodeComponent
         }
         fun <ChildState, ChildProperties> updateChild(component: Component<ChildState, ChildProperties>) {
@@ -75,9 +77,9 @@ object ComponentManager {
         }
     }
 
-    fun <State, Properties> dispatch(target: Component<State, Properties>, event: Event) {
+    fun dispatch(event: Event) {
         val ancestry = mutableListOf<Component<*, *>>()
-        var child: Component<*, *>? = target.parentComponent
+        var child: Component<*, *>? = event.target.parentComponent
         while (child != null) {
             ancestry.add(child)
             child = child.parentComponent
@@ -93,7 +95,7 @@ object ComponentManager {
 
         // Target phase
         event.phase = Phase.TARGET
-        target.handle(event)
+        event.target.handle(event)
         if (event.stopPropagation)
             return
 
