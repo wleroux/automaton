@@ -26,7 +26,7 @@ abstract class Component<State, Properties> {
     // Nodes
     open fun asNodes(): List<Node<*, *>> = emptyList()
 
-    // Elements
+    // Rendering
     var x: Int = 0
     var y: Int = 0
     var width: Int = 0
@@ -36,7 +36,11 @@ abstract class Component<State, Properties> {
     open fun preferredHeight(parentWidth: Int, parentHeight: Int): Int =
             childComponents.values.map { it.preferredHeight(parentWidth, parentHeight) }.max() ?: 0
     open fun render(): Unit = childComponents.values.forEach { it.render() }
+
+    // Handling Events
     open fun handle(event: Event): Unit = Unit
+
+    // Retrieving Components
     open fun findComponentAt(x: Int, y: Int): Component<*, *>? {
         if (x < this.x || this.x + this.width < x) return null
         if (y < this.y || this.y + this.height < y) return null

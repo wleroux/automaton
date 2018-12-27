@@ -5,7 +5,7 @@ import com.github.wleroux.keact.api.Node
 class TextBuilder(private val key: Any? = null) {
     companion object {
         @JvmStatic
-        fun build(key: Any? = null, block: TextBuilder.() -> Unit): Node<Unit, String> {
+        fun text(key: Any? = null, block: TextBuilder.() -> Unit): Node<Unit, String> {
             return TextBuilder(key).apply(block).build()
         }
     }

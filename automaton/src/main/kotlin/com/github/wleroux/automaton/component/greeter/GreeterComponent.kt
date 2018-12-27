@@ -1,8 +1,9 @@
 package com.github.wleroux.automaton.component.greeter
 
-import com.github.wleroux.automaton.component.Components.text
+import com.github.wleroux.automaton.component.text.TextBuilder.Companion.text
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.Node
+import com.github.wleroux.keact.api.event.Event
 
 class GreeterComponent: Component<Unit, List<Node<*, *>>>() {
     override var properties: List<Node<*, *>> = emptyList()
@@ -11,6 +12,10 @@ class GreeterComponent: Component<Unit, List<Node<*, *>>>() {
         text { +"Hello, " },
         *properties.toTypedArray(),
         text { +"!" },
-        text { +System.lineSeparator()}
+        text { +System.lineSeparator() }
     )
+
+    override fun handle(event: Event) {
+        println(event)
+    }
 }

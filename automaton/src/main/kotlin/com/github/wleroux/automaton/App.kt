@@ -1,17 +1,28 @@
 package com.github.wleroux.automaton
 
-import com.github.wleroux.automaton.component.Components.greeter
-import com.github.wleroux.automaton.component.Components.text
-import com.github.wleroux.automaton.component.greeter.Click
-import com.github.wleroux.keact.api.ComponentManager
+import com.github.wleroux.automaton.component.greeter.GreeterBuilder.Companion.greeter
+import com.github.wleroux.automaton.component.text.TextBuilder.Companion.text
+import com.github.wleroux.keact.api.*
 
 fun main(args: Array<String>) {
-    val greeterNode = greeter("greeter") {
-        +text("name") { +"World"}
-    }
 
-    val greeterComponent = ComponentManager.mount(greeterNode.type, greeterNode.properties)
+    val greeterComponent = greeter { +text { +"World" } }.mount()
     greeterComponent.render()
 
-    ComponentManager.dispatch(Click(greeterComponent))
+    var counter: Int = 0
+    while (counter < 7) {
+        val greeterNode = greeter("greeter") {
+            +text { +"World" }
+            +text { +"[" }
+            +text { +counter.toString() }
+            +text { +"]" }
+        }
+
+        greeterComponent.update(greeterNode.properties)
+        greeterComponent.render()
+        counter ++
+    }
+
+    greeterComponent.dispatch(Click)
+    greeterComponent.unmount()
 }
