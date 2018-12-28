@@ -35,7 +35,13 @@ abstract class Component<State, Properties> {
             childComponents.values.map { it.preferredWidth(parentWidth, parentHeight) }.max() ?: 0
     open fun preferredHeight(parentWidth: Int, parentHeight: Int): Int =
             childComponents.values.map { it.preferredHeight(parentWidth, parentHeight) }.max() ?: 0
-    open fun render(): Unit = childComponents.values.forEach { it.render() }
+    open fun render(): Unit = childComponents.values.forEach {
+        it.x = x
+        it.y = y
+        it.width = width
+        it.height = height
+        it.render()
+    }
 
     // Handling Events
     open fun handle(event: Event): Unit = Unit

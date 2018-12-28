@@ -1,28 +1,27 @@
 package com.github.wleroux.automaton
 
-import com.github.wleroux.automaton.component.greeter.GreeterBuilder.Companion.greeter
-import com.github.wleroux.automaton.component.text.TextBuilder.Companion.text
+import com.github.wleroux.automaton.component.fpscounter.FPSCounterBuilder.Companion.fpsCounter
+import com.github.wleroux.automaton.component.cube.CubeBuilder.Companion.cube
+import com.github.wleroux.automaton.component.window.WindowBuilder.Companion.window
+import com.github.wleroux.automaton.component.window.WindowComponent
 import com.github.wleroux.keact.api.*
+import com.github.wleroux.keact.api.component.layout.LayoutBuilder.Companion.layout
+import com.github.wleroux.keact.api.component.overlay.OverlayBuilder.Companion.overlay
 
 fun main(args: Array<String>) {
-
-    val greeterComponent = greeter { +text { +"World" } }.mount()
-    greeterComponent.render()
-
-    var counter: Int = 0
-    while (counter < 7) {
-        val greeterNode = greeter("greeter") {
-            +text { +"World" }
-            +text { +"[" }
-            +text { +counter.toString() }
-            +text { +"]" }
+    val windowNode = window {
+        +overlay {
+            +cube()
+            +layout {
+                +fpsCounter()
+            }
         }
-
-        greeterComponent.update(greeterNode.properties)
-        greeterComponent.render()
-        counter ++
     }
 
-    greeterComponent.dispatch(Click)
-    greeterComponent.unmount()
+    val windowComponent = windowNode.mount() as WindowComponent
+    while (windowComponent.isActive) {
+        windowComponent.update(windowNode.properties)
+        windowComponent.render()
+    }
+    windowComponent.unmount()
 }

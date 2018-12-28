@@ -1,21 +1,24 @@
 package com.github.wleroux.automaton.component.text
 
+import com.github.wleroux.automaton.component.text.font.Font
+import com.github.wleroux.automaton.math.Color4f
 import com.github.wleroux.keact.api.Node
 
-class TextBuilder(private val key: Any? = null) {
+class TextBuilder(val key: Any? = null) {
     companion object {
-        @JvmStatic
-        fun text(key: Any? = null, block: TextBuilder.() -> Unit): Node<Unit, String> {
-            return TextBuilder(key).apply(block).build()
-        }
+        fun text(key: Any? = null, block: TextBuilder.() -> Unit) =
+                TextBuilder(key).apply(block).build()
     }
 
+    var size: Int = 0
     lateinit var text: String
-    operator fun String.unaryPlus() {
-        text = this
-    }
+    lateinit var color: Color4f
+    lateinit var font: Font
 
-    fun build(): Node<Unit, String> {
-        return Node(TextComponent::class, text, key)
-    }
+    fun build() = Node(TextComponent::class, TextComponent.TextProperties(
+            text,
+            size,
+            color,
+            font
+    ), key)
 }
