@@ -6,6 +6,7 @@ import com.github.wleroux.automaton.loadText
 import com.github.wleroux.automaton.loadTexture
 import com.github.wleroux.automaton.math.Color4f
 import com.github.wleroux.automaton.math.Matrix4f
+import com.github.wleroux.automaton.math.Vector2f
 import com.github.wleroux.automaton.program.Mesh
 import com.github.wleroux.automaton.program.Program
 import com.github.wleroux.automaton.program.Texture
@@ -26,12 +27,13 @@ class TextComponent: Component<Unit, TextComponent.TextProperties>() {
     lateinit var program: Program
     override fun componentWillMount() {
         program = Program.build {
-            vertexShader(loadText("com/github/wleroux/automaton/program/text/text.vs.glsl"))
+            vertexShader(loadText("com/github/wleroux/automaton/program/sdf/sdf.vs.glsl"))
             uniform("projection")
 
-            fragmentShader(loadText("com/github/wleroux/automaton/program/text/text.fs.glsl"))
-            uniform("Color")
+            fragmentShader(loadText("com/github/wleroux/automaton/program/sdf/sdf.fs.glsl"))
             uniform("BaseColor")
+            uniform("Color", "Width", "Edge")
+            uniform("BorderColor", "BorderWidth", "BorderEdge", "BorderOffset")
         }
     }
 
@@ -63,8 +65,16 @@ class TextComponent: Component<Unit, TextComponent.TextProperties>() {
                     -1f,
                     1f
             ))
-            setUniform("Color", properties.color)
             setUniform("BaseColor", texture)
+
+            setUniform("Color", properties.color)
+            setUniform("Width", 0.4f)
+            setUniform("Edge", 0.01f)
+
+            setUniform("BorderColor", Color4f(0.0f, 0.0f, 0.0f, 1.0f))
+            setUniform("BorderWidth", 0.4f)
+            setUniform("BorderEdge", 0.1f)
+            setUniform("BorderOffset", Vector2f(-0.01f, 0.01f))
             mesh.bind {
                 mesh.draw()
             }

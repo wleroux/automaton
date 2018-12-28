@@ -1,9 +1,6 @@
 package com.github.wleroux.automaton.program
 
-import com.github.wleroux.automaton.math.Color4f
-import com.github.wleroux.automaton.math.Matrix4f
-import com.github.wleroux.automaton.math.Quaternion
-import com.github.wleroux.automaton.math.Vector3f
+import com.github.wleroux.automaton.math.*
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11.GL_TRUE
 import org.lwjgl.opengl.GL20.*
@@ -86,6 +83,9 @@ class Program private constructor(val id: Int, private val uniformLocations: Map
   }
   fun setUniform(uniform: String, value: Float) {
     glUniform1f(uniformLocations[uniform]!!, value)
+  }
+  fun setUniform(uniform: String, value: Vector2f) {
+    glUniform2f(uniformLocations[uniform]!!, value.x, value.y)
   }
   fun setUniform(uniform: String, value: Vector3f) {
     glUniform3f(uniformLocations[uniform]!!, value.x, value.y, value.z)
