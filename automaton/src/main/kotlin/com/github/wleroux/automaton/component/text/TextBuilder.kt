@@ -1,6 +1,7 @@
 package com.github.wleroux.automaton.component.text
 
 import com.github.wleroux.automaton.component.text.font.Font
+import com.github.wleroux.automaton.loadFont
 import com.github.wleroux.automaton.math.Color4f
 import com.github.wleroux.keact.api.Node
 
@@ -10,10 +11,10 @@ class TextBuilder(val key: Any? = null) {
                 TextBuilder(key).apply(block).build()
     }
 
-    var size: Int = 0
     lateinit var text: String
-    lateinit var color: Color4f
-    lateinit var font: Font
+    var size: Int = 24
+    var color: Color4f = Color4f(1f, 1f, 1f, 1f)
+    var font: Font = loadFont("font/Roboto_Slab/Roboto_Slab-Regular.fnt")
 
     fun build() = Node(TextComponent::class, TextComponent.TextProperties(
             text,
