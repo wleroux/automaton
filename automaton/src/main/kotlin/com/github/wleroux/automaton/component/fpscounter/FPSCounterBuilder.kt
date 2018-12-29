@@ -1,7 +1,9 @@
 package com.github.wleroux.automaton.component.fpscounter
 
 import com.github.wleroux.keact.api.Node
+import com.github.wleroux.keact.api.component.NodeBuilderDslMarker
 
+@NodeBuilderDslMarker
 class FPSCounterBuilder(private val key: Any?) {
     companion object {
         @JvmStatic

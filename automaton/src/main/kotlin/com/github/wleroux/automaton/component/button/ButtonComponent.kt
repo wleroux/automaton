@@ -1,10 +1,8 @@
 package com.github.wleroux.automaton.component.button
 
 import com.github.wleroux.automaton.component.buttonbase.ButtonBaseBuilder.Companion.buttonBase
+import com.github.wleroux.automaton.theme.ButtonTheme
 import com.github.wleroux.automaton.component.window.event.*
-import com.github.wleroux.keact.api.theme.Color
-import com.github.wleroux.keact.api.theme.Border
-import com.github.wleroux.keact.api.theme.Padding
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.Node
 import com.github.wleroux.keact.api.component.layout.ItemAlign
@@ -22,20 +20,9 @@ class ButtonComponent: Component<ButtonComponent.ButtonState, ButtonComponent.Bu
         val focused: Boolean = false
     )
 
-    data class ButtonStateProperties(
-            val color: Color = Color(0.5f, 0.5f, 0.5f, 1f),
-            val border: Border = Border(),
-            val padding: Padding = Padding(),
-            val margin: Padding = Padding()
-    )
-
     data class ButtonProperties(
             val disabled: Boolean,
-            val defaultStyle: ButtonStateProperties,
-            val disabledStyle: ButtonStateProperties,
-            val hoveredStyle: ButtonStateProperties,
-            val pressedStyle: ButtonStateProperties,
-            val focusedStyle: ButtonStateProperties,
+            val theme: ButtonTheme,
             val clickHandler: (Event) -> Unit,
             val nodes: List<Node<*, *>>
     )
@@ -43,11 +30,11 @@ class ButtonComponent: Component<ButtonComponent.ButtonState, ButtonComponent.Bu
     override fun asNodes(): List<Node<*, *>> = listOf(
             padding {
                 val buttonStyle = when {
-                    properties.disabled -> properties.disabledStyle
-                    state.pressed -> properties.pressedStyle
-                    state.hovered -> properties.hoveredStyle
-                    state.focused -> properties.focusedStyle
-                    else -> properties.defaultStyle
+                    properties.disabled -> properties.theme.disabledStyle
+                    state.pressed -> properties.theme.pressedStyle
+                    state.hovered -> properties.theme.hoveredStyle
+                    state.focused -> properties.theme.focusedStyle
+                    else -> properties.theme.defaultStyle
                 }
 
                 padding = buttonStyle.margin

@@ -1,7 +1,9 @@
 package com.github.wleroux.automaton.component.window
 
 import com.github.wleroux.keact.api.Node
+import com.github.wleroux.keact.api.component.NodeBuilderDslMarker
 
+@NodeBuilderDslMarker
 class WindowBuilder(private val key: Any? = null) {
     companion object {
         @JvmStatic

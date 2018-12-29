@@ -4,7 +4,9 @@ import com.github.wleroux.automaton.component.text.font.Font
 import com.github.wleroux.automaton.loadFont
 import com.github.wleroux.keact.api.theme.Color
 import com.github.wleroux.keact.api.Node
+import com.github.wleroux.keact.api.component.NodeBuilderDslMarker
 
+@NodeBuilderDslMarker
 class TextBuilder(val key: Any? = null) {
     companion object {
         fun text(key: Any? = null, block: TextBuilder.() -> Unit) =

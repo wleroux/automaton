@@ -17,7 +17,7 @@ fun <State: Any, Properties: Any> Node<State, Properties>.mount(parentComponent:
     component.properties = this.properties
     component.componentDidMount()
 
-    component.update(this.properties, true)
+    component.update(component.properties, true)
 
     return component
 }
@@ -31,7 +31,7 @@ fun <State: Any, Properties: Any> Component<State, Properties>.update(nextProper
         } else {
             node.mount(parent)
         }
-        nodeComponent.update(node.properties, !reuseComponent)
+        nodeComponent.update(node.properties)
         return nodeComponent
     }
 

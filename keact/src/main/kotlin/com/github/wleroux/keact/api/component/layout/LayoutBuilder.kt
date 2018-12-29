@@ -1,7 +1,9 @@
 package com.github.wleroux.keact.api.component.layout
 
 import com.github.wleroux.keact.api.Node
+import com.github.wleroux.keact.api.component.NodeBuilderDslMarker
 
+@NodeBuilderDslMarker
 class LayoutBuilder(private val key: Any?) {
 
     companion object {
