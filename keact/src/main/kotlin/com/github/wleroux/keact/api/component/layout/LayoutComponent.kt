@@ -7,9 +7,7 @@ import com.github.wleroux.keact.api.Node
 /**
  * LayoutComponent takes the `bounds` provided and divides the space with to child components
  */
-class LayoutComponent : Component<Unit, LayoutComponent.LayoutProperties>() {
-  override lateinit var properties: LayoutProperties
-  override var state: Unit = Unit
+class LayoutComponent : Component<Unit, LayoutComponent.LayoutProperties>(Unit) {
   class LayoutProperties(
           val direction: Direction,
           val justifyContent: JustifyContent,

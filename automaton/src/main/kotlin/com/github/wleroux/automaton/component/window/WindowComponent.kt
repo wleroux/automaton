@@ -13,10 +13,7 @@ import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL11.*
 import org.lwjgl.system.MemoryUtil
 
-class WindowComponent: Component<Unit, List<Node<*, *>>>() {
-    override lateinit var properties: List<Node<*, *>>
-    override var state: Unit = Unit
-
+class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
     private var window: Long = 0L
     private var focus: Component<*, *>? = null
     private var hover: Component<*, *>? = null
@@ -116,10 +113,19 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>() {
     }
 
     override fun handle(event: Event) {
-        if (event.data is KeyStroke) {
-            val keyStroke = event.data as KeyStroke
-            if(keyStroke.action == KeyAction.RELEASED && keyStroke.character == 0x1.toChar()) {
-                glfwSetWindowShouldClose(window, true)
+        when {
+            event.data is KeyStroke -> {
+                val keyStroke = event.data as KeyStroke
+                if(keyStroke.action == KeyAction.RELEASED && keyStroke.character == 0x1.toChar()) {
+                    glfwSetWindowShouldClose(window, true)
+                }
+            }
+            event.data is RequestFocus -> {
+                if (focus != event.target) {
+                    focus?.dispatch(Unfocus)
+                    focus = event.target
+                    event.target.dispatch(Focus)
+                }
             }
         }
     }
@@ -171,7 +177,8 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>() {
                 when (action) {
                     GLFW_PRESS -> KeyAction.PRESSED
                     GLFW_RELEASE -> KeyAction.RELEASED
-                    else -> throw IllegalStateException()
+                    GLFW_REPEAT -> KeyAction.PRESSED
+                    else -> throw IllegalStateException("Unknown Key: $action")
                 },
                 (mods and GLFW_MOD_SHIFT) != 0,
                 (mods and GLFW_MOD_CONTROL) != 0,

@@ -4,14 +4,11 @@ import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.Node
 import com.github.wleroux.keact.api.theme.Padding
 
-class PaddingComponent: Component<Unit, PaddingComponent.PaddingProperties>() {
+class PaddingComponent: Component<Unit, PaddingComponent.PaddingProperties>(Unit) {
     data class PaddingProperties(
             val padding: Padding,
             val nodes: List<Node<*, *>>
     )
-
-    override lateinit var properties: PaddingProperties
-    override var state: Unit = Unit
 
     override fun asNodes() = properties.nodes
 

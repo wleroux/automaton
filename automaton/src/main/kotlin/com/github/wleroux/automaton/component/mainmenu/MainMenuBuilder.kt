@@ -1,7 +1,9 @@
 package com.github.wleroux.automaton.component.mainmenu
 
 import com.github.wleroux.automaton.component.button.ButtonBuilder
+import com.github.wleroux.automaton.component.button.ButtonBuilder.Companion.button
 import com.github.wleroux.automaton.component.text.TextBuilder
+import com.github.wleroux.automaton.component.text.TextBuilder.Companion.text
 import com.github.wleroux.keact.api.component.layout.ContentAlign
 import com.github.wleroux.keact.api.component.layout.Direction
 import com.github.wleroux.keact.api.component.layout.ItemAlign
@@ -24,20 +26,20 @@ class MainMenuBuilder(val key: Any? = null) {
         alignContent = ContentAlign.CENTER
         alignItems = ItemAlign.STRETCH
 
-        +ButtonBuilder.button {
-            +TextBuilder.text { text = "New Game" }
+        +button {
+            +text { text = "New Game" }
             clickHandler = {
                 startGameHandler()
             }
         }
-        +ButtonBuilder.button {
-            +TextBuilder.text { text = "Load Game" }
+        +button {
+            +text { text = "Load Game" }
             clickHandler = {
                 loadGameHandler()
             }
         }
-        +ButtonBuilder.button {
-            +TextBuilder.text { text = "Quit" }
+        +button {
+            +text { text = "Quit" }
             clickHandler = {
                 quitHandler()
             }

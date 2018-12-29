@@ -13,16 +13,13 @@ import com.github.wleroux.automaton.program.Texture
 import com.github.wleroux.keact.api.Component
 import org.lwjgl.opengl.GL11.*
 
-class TextComponent: Component<Unit, TextComponent.TextProperties>() {
+class TextComponent: Component<Unit, TextComponent.TextProperties>(Unit) {
     data class TextProperties(
             val text: String,
             val size: Int,
             val color: Color,
             val font: Font
     )
-
-    override lateinit var properties: TextProperties
-    override var state: Unit = Unit
 
     lateinit var program: Program
     override fun componentWillMount() {

@@ -12,10 +12,7 @@ import com.github.wleroux.automaton.program.Program
 import com.github.wleroux.keact.api.Component
 import org.lwjgl.opengl.GL11
 
-class CubeComponent: Component<Unit, Unit>() {
-    override var properties: Unit = Unit
-    override var state: Unit = Unit
-
+class CubeComponent: Component<Unit, Unit>(Unit) {
     lateinit var program: Program
     lateinit var model: Model
     override fun componentWillMount() {

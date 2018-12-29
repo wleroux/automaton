@@ -2,13 +2,13 @@ package com.github.wleroux.keact.api
 
 import com.github.wleroux.keact.api.event.Event
 
-abstract class Component<State, Properties> {
+abstract class Component<State: Any, Properties: Any>(initialState: State) {
     var parentComponent: Component<*, *>? = null
     var childComponents: Map<Any, Component<*, *>> = emptyMap()
 
-    abstract var properties: Properties
-    abstract var state: State
-    var nextState: State? = null
+    lateinit var properties: Properties
+    var previousState: State = initialState
+    var state: State = initialState
 
     // Mounting
     open fun componentWillMount(): Unit = Unit
@@ -18,7 +18,7 @@ abstract class Component<State, Properties> {
     // Updating
     open fun componentWillReceiveProps(nextProperties: Properties): Unit = Unit
     open fun shouldComponentUpdate(nextProperties: Properties, nextState: State): Boolean {
-        return properties != nextProperties || state != nextState
+        return properties != nextProperties || previousState != nextState
     }
     open fun componentWillUpdate(nextProperties: Properties, nextState: State): Unit = Unit
     open fun componentDidUpdate(previousProperties: Properties, previousState: State): Unit = Unit

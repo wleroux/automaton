@@ -14,15 +14,13 @@ import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11.*
 import java.lang.Math.*
 
-class ButtonBaseComponent : Component<Unit, ButtonBaseComponent.BaseProperties>() {
+class ButtonBaseComponent : Component<Unit, ButtonBaseComponent.BaseProperties>(Unit) {
   data class BaseProperties(
           val color: Color = Color(0.5f, 0.5f, 0.5f, 1.0f),
           val border: Border = Border(),
           val nodes: List<Node<*, *>>
   )
 
-  override lateinit var properties: BaseProperties
-  override var state: Unit = Unit
   override fun asNodes() = properties.nodes
 
   private lateinit var program: Program

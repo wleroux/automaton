@@ -8,9 +8,7 @@ import com.github.wleroux.keact.api.component.padding.PaddingBuilder.Companion.p
 import com.github.wleroux.keact.api.theme.Padding
 import java.util.concurrent.TimeUnit
 
-class FPSCounterComponent: Component<Int, Unit>() {
-    override var properties: Unit = Unit
-    override var state: Int = 0
+class FPSCounterComponent: Component<Int, Unit>(0) {
     var ticks = 0
     var lastUpdate = System.nanoTime()
     override fun asNodes() = listOf(
@@ -26,7 +24,7 @@ class FPSCounterComponent: Component<Int, Unit>() {
     override fun render() {
         val now = System.nanoTime()
         if (now - lastUpdate > TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS)) {
-            nextState = ticks
+            state = ticks
             ticks = 0
             lastUpdate = now
         }
