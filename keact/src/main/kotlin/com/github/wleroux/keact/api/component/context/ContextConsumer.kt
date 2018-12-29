@@ -17,7 +17,9 @@ class ContextConsumer<ContextProperties: Any>: Component<Unit, ContextConsumer.C
             this.updatePending = true
         }
     }
-    override fun shouldComponentUpdate(nextProperties: ContextConsumerProperties<ContextProperties>, nextState: Unit) = updatePending
+    override fun shouldComponentUpdate(nextProperties: ContextConsumerProperties<ContextProperties>, nextState: Unit): Boolean {
+        return updatePending || super.shouldComponentUpdate(nextProperties, nextState)
+    }
 
     override fun componentWillUnmount() {
         contextSubscription.close()

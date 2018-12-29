@@ -3,7 +3,7 @@ package com.github.wleroux.automaton
 import com.github.wleroux.automaton.component.fpscounter.FPSCounterBuilder.Companion.fpsCounter
 import com.github.wleroux.automaton.component.cube.CubeBuilder.Companion.cube
 import com.github.wleroux.automaton.component.mainmenu.MainMenuBuilder.Companion.mainMenu
-import com.github.wleroux.automaton.component.theme.ThemeContext
+import com.github.wleroux.automaton.theme.ThemeContext
 import com.github.wleroux.automaton.component.window.WindowBuilder.Companion.window
 import com.github.wleroux.automaton.component.window.WindowComponent
 import com.github.wleroux.automaton.theme.DEFAULT_THEME

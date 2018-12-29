@@ -1,4 +1,4 @@
-package com.github.wleroux.automaton.component.buttonbase
+package com.github.wleroux.automaton.component.card
 
 import com.github.wleroux.automaton.loadText
 import com.github.wleroux.keact.api.theme.Color
@@ -7,17 +7,16 @@ import com.github.wleroux.automaton.math.toFloat
 import com.github.wleroux.automaton.program.Mesh
 import com.github.wleroux.automaton.program.Program
 import com.github.wleroux.automaton.program.Texture
-import com.github.wleroux.keact.api.theme.Border
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.Node
+import com.github.wleroux.keact.api.component.padding.PaddingBuilder.Companion.padding
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11.*
 import java.lang.Math.*
 
-class ButtonBaseComponent : Component<Unit, ButtonBaseComponent.BaseProperties>(Unit) {
-  data class BaseProperties(
-          val color: Color = Color(0.5f, 0.5f, 0.5f, 1.0f),
-          val border: Border = Border(),
+class CardComponent : Component<Unit, CardComponent.CardProperties>(Unit) {
+  data class CardProperties(
+          val theme: CardTheme = CardTheme(),
           val nodes: List<Node<*, *>>
   )
 
@@ -37,24 +36,28 @@ class ButtonBaseComponent : Component<Unit, ButtonBaseComponent.BaseProperties>(
   private var texture: Texture? = null
   private var mesh: Mesh? = null
   override fun preferredWidth(parentWidth: Int, parentHeight: Int): Int {
-    val horizontalBorder = properties.border.width.left + properties.border.width.right
-    return horizontalBorder + super.preferredWidth(parentWidth, parentHeight)
+    val horizontalMargin = properties.theme.margin.left + properties.theme.margin.right
+    val horizontalBorder = properties.theme.border.width.left + properties.theme.border.width.right
+    val horizontalPadding = properties.theme.padding.left + properties.theme.padding.right
+    return horizontalMargin + horizontalBorder + horizontalPadding + super.preferredWidth(parentWidth, parentHeight)
   }
 
   override fun preferredHeight(parentWidth: Int, parentHeight: Int): Int {
-    val verticalBorder = properties.border.width.top + properties.border.width.bottom
-    return verticalBorder + super.preferredHeight(parentWidth, parentHeight)
+    val verticalMargin = properties.theme.margin.top + properties.theme.margin.bottom
+    val verticalBorder = properties.theme.border.width.top + properties.theme.border.width.bottom
+    val verticalPadding = properties.theme.padding.top + properties.theme.padding.bottom
+    return verticalMargin + verticalBorder + verticalPadding + super.preferredHeight(parentWidth, parentHeight)
   }
 
-  override fun componentDidUpdate(previousProperties: BaseProperties, previousState: Unit) {
+  override fun componentDidUpdate(previousProperties: CardProperties, previousState: Unit) {
     super.componentDidUpdate(previousProperties, previousState)
-    refreshButton()
+    refreshCard()
   }
 
-  private fun refreshButton() {
+  private fun refreshCard() {
     val marginColor = Color(0f, 0f, 0f, 0f)
-    val buttonColor = properties.color
-    val borderColor = properties.border.color
+    val buttonColor = properties.theme.color
+    val borderColor = properties.theme.border.color
     val pixels = BufferUtils.createByteBuffer(width * height * 4)
     val pixelColors = pixels.asFloatBuffer()
     (0 until height).forEach { y ->
@@ -71,19 +74,19 @@ class ButtonBaseComponent : Component<Unit, ButtonBaseComponent.BaseProperties>(
     texture = Texture(width, height, pixels, GL_RGBA8, GL_RGBA)
     mesh?.close()
     mesh = Mesh(arrayOf(
-        0f, 0f, 0f, 0f,
-        width.toFloat(), 0f, 1f, 0f,
-        width.toFloat(), height.toFloat(), 1f, 1f,
-        0f, height.toFloat(), 0f, 1f
+            0f, 0f, 0f, 0f,
+            width.toFloat(), 0f, 1f, 0f,
+            width.toFloat(), height.toFloat(), 1f, 1f,
+            0f, height.toFloat(), 0f, 1f
     ), arrayOf(0, 1, 2, 2, 3, 0),
-      listOf(Mesh.Attribute("position", GL_FLOAT, 2), Mesh.Attribute("texCoord", GL_FLOAT, 2)))
+            listOf(Mesh.Attribute("position", GL_FLOAT, 2), Mesh.Attribute("texCoord", GL_FLOAT, 2)))
   }
 
   var prevWidth: Int = 0
   var prevHeight: Int = 0
   override fun render() {
     if (prevWidth != width && prevHeight != height) {
-      refreshButton()
+      refreshCard()
       prevWidth = width
       prevHeight = height
     }
@@ -95,42 +98,52 @@ class ButtonBaseComponent : Component<Unit, ButtonBaseComponent.BaseProperties>(
       mesh!!.bind { draw() }
     }
 
-    val (bTop, bRight, bBottom, bLeft) = properties.border.width
+    val (mTop, mRight, mBottom, mLeft) = properties.theme.margin
+    val (bTop, bRight, bBottom, bLeft) = properties.theme.border.width
+    val (pTop, pRight, pBottom, pLeft) = properties.theme.padding
     childComponents.values.forEach {
-      it.x = x + bLeft
-      it.y = y + bBottom
-      it.width = width - bLeft - bRight
-      it.height = height - bTop - bBottom
+      it.x = x + bLeft + mLeft + pLeft
+      it.y = y + bBottom + mBottom + pBottom
+      it.width = width - bLeft - bRight - mLeft - mRight - pLeft - pRight
+      it.height = height - bTop - bBottom - mTop - mRight - pTop - pBottom
       it.render()
     }
   }
 
   private fun isMargin(x: Int, y: Int): Boolean {
-    val border = properties.border
+    val margin = properties.theme.margin
+    val border = properties.theme.border
 
-    val topLeftX = border.radius.topLeft
-    val topLeftY = height - border.radius.topLeft
+    if (height - margin.top <= y || y < margin.bottom) {
+      return true
+    }
+    if (width - margin.right <= x || x < margin.left) {
+      return true
+    }
+
+    val topLeftX = margin.left + border.radius.topLeft
+    val topLeftY = height - margin.top - border.radius.topLeft
     if (x <= topLeftX && y > topLeftY) {
       val d = sqrt(pow((x - topLeftX).toDouble(), 2.0) + pow((y - topLeftY).toDouble(), 2.0))
       return (d > border.radius.topLeft)
     }
 
-    val topRightX = width - border.radius.topRight
-    val topRightY = height - border.radius.topRight
+    val topRightX = width - margin.right - border.radius.topRight
+    val topRightY = height - margin.top - border.radius.topRight
     if (x >= topRightX && y > topRightY) {
       val d = sqrt(pow((x - topRightX).toDouble(), 2.0) + pow((y - topRightY).toDouble(), 2.0))
       return (d > border.radius.topRight)
     }
 
-    val bottomRightX = width - border.radius.bottomRight
-    val bottomRightY = border.radius.bottomRight
+    val bottomRightX = width - margin.right - border.radius.bottomRight
+    val bottomRightY = margin.bottom + border.radius.bottomRight
     if (x >= bottomRightX && y < bottomRightY) {
       val d = sqrt(pow((x - bottomRightX).toDouble(), 2.0) + pow((y - bottomRightY).toDouble(), 2.0))
       return (d > border.radius.bottomRight)
     }
 
-    val bottomLeftX = border.radius.bottomLeft
-    val bottomLeftY = border.radius.bottomLeft
+    val bottomLeftX = margin.left + border.radius.bottomLeft
+    val bottomLeftY = margin.bottom + border.radius.bottomLeft
     if (x <= bottomLeftX && y <= bottomLeftY) {
       val d = sqrt(pow((x - bottomLeftX).toDouble(), 2.0) + pow((y - bottomLeftY).toDouble(), 2.0))
       return (d > border.radius.bottomLeft)
@@ -141,37 +154,39 @@ class ButtonBaseComponent : Component<Unit, ButtonBaseComponent.BaseProperties>(
 
 
   private fun isBorder(x: Int, y: Int): Boolean {
-    val border = properties.border
-    if (height - border.width.top <= y || y < border.width.bottom) {
+    val margin = properties.theme.margin
+    val border = properties.theme.border
+
+    if (height - margin.top - border.width.top <= y || y < margin.bottom + border.width.bottom) {
       return true
     }
-    if (width - border.width.right <= x || x < border.width.left) {
+    if (width - margin.right - border.width.right <= x || x < margin.left + border.width.left) {
       return true
     }
 
-    val topLeftX = border.radius.topLeft + border.width.left
-    val topLeftY = height - border.radius.topLeft - border.width.top
+    val topLeftX = margin.left + border.radius.topLeft + border.width.left
+    val topLeftY = height - margin.top - border.radius.topLeft - border.width.top
     if (x < topLeftX && y > topLeftY) {
       val d = sqrt(pow((x - topLeftX).toDouble(), 2.0) + pow((y - topLeftY).toDouble(), 2.0))
       return (d > border.radius.topLeft)
     }
 
-    val topRightX = width - border.radius.topRight - border.width.right
-    val topRightY = height - border.radius.topRight - border.width.top
+    val topRightX = width - margin.right - border.radius.topRight - border.width.right
+    val topRightY = height - margin.top - border.radius.topRight - border.width.top
     if (x > topRightX && y > topRightY) {
       val d = sqrt(pow((x - topRightX).toDouble(), 2.0) + pow((y - topRightY).toDouble(), 2.0))
       return (d > border.radius.topRight)
     }
 
-    val bottomRightX = width - border.radius.bottomRight - border.width.right
-    val bottomRightY = border.radius.bottomRight + border.width.bottom
+    val bottomRightX = width - margin.right - border.radius.bottomRight - border.width.right
+    val bottomRightY = margin.bottom + border.radius.bottomRight + border.width.bottom
     if (x > bottomRightX && y < bottomRightY) {
       val d = sqrt(pow((x - bottomRightX).toDouble(), 2.0) + pow((y - bottomRightY).toDouble(), 2.0))
       return (d > border.radius.bottomRight)
     }
 
-    val bottomLeftX = border.radius.bottomLeft + border.width.left
-    val bottomLeftY = border.radius.bottomLeft + border.width.bottom
+    val bottomLeftX = margin.left + border.radius.bottomLeft + border.width.left
+    val bottomLeftY = margin.bottom + border.radius.bottomLeft + border.width.bottom
     if (x < bottomLeftX && y < bottomLeftY) {
       val d = sqrt(pow((x - bottomLeftX).toDouble(), 2.0) + pow((y - bottomLeftY).toDouble(), 2.0))
       return (d > border.radius.bottomLeft)
@@ -180,3 +195,4 @@ class ButtonBaseComponent : Component<Unit, ButtonBaseComponent.BaseProperties>(
     return false
   }
 }
+

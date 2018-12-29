@@ -1,6 +1,5 @@
 package com.github.wleroux.automaton.component.text
 
-import com.github.wleroux.automaton.component.text.font.Font
 import com.github.wleroux.automaton.component.text.font.FontMeshCreator
 import com.github.wleroux.automaton.loadText
 import com.github.wleroux.automaton.loadTexture
@@ -16,9 +15,7 @@ import org.lwjgl.opengl.GL11.*
 class TextComponent: Component<Unit, TextComponent.TextProperties>(Unit) {
     data class TextProperties(
             val text: String,
-            val size: Int,
-            val color: Color,
-            val font: Font
+            val theme: TextTheme
     )
 
     lateinit var program: Program
@@ -39,10 +36,10 @@ class TextComponent: Component<Unit, TextComponent.TextProperties>(Unit) {
     var textWidth: Float = 0f
     var textHeight: Float = 0f
     override fun componentDidUpdate(previousProperties: TextProperties, previousState: Unit) {
-        mesh = FontMeshCreator.generateTextMesh(properties.text, properties.font, properties.size)
-        textWidth = FontMeshCreator.getWidth(properties.text, properties.font, properties.size)
-        textHeight = FontMeshCreator.getHeight(properties.text, properties.font, properties.size)
-        texture = loadTexture(checkNotNull(properties.font.pages[0]))
+        mesh = FontMeshCreator.generateTextMesh(properties.text, properties.theme.font, properties.theme.size)
+        textWidth = FontMeshCreator.getWidth(properties.text, properties.theme.font, properties.theme.size)
+        textHeight = FontMeshCreator.getHeight(properties.text, properties.theme.font, properties.theme.size)
+        texture = loadTexture(checkNotNull(properties.theme.font.pages[0]))
     }
 
     override fun preferredWidth(parentWidth: Int, parentHeight: Int): Int = textWidth.toInt()
@@ -64,7 +61,7 @@ class TextComponent: Component<Unit, TextComponent.TextProperties>(Unit) {
             ))
             setUniform("BaseColor", texture)
 
-            setUniform("Color", properties.color)
+            setUniform("Color", properties.theme.color)
             setUniform("Width", 0.4f)
             setUniform("Edge", 0.01f)
 

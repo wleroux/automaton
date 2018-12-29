@@ -1,7 +1,6 @@
 package com.github.wleroux.automaton.component.button
 
-import com.github.wleroux.automaton.component.buttonbase.ButtonBaseBuilder.Companion.buttonBase
-import com.github.wleroux.automaton.theme.ButtonTheme
+import com.github.wleroux.automaton.component.card.CardBuilder.Companion.card
 import com.github.wleroux.automaton.component.window.event.*
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.Node
@@ -27,33 +26,23 @@ class ButtonComponent: Component<ButtonComponent.ButtonState, ButtonComponent.Bu
             val nodes: List<Node<*, *>>
     )
 
-    override fun asNodes(): List<Node<*, *>> = listOf(
-            padding {
-                val buttonStyle = when {
-                    properties.disabled -> properties.theme.disabledStyle
-                    state.pressed -> properties.theme.pressedStyle
-                    state.hovered -> properties.theme.hoveredStyle
-                    state.focused -> properties.theme.focusedStyle
-                    else -> properties.theme.defaultStyle
-                }
-
-                padding = buttonStyle.margin
-                +buttonBase {
-                    color = buttonStyle.color
-                    border = buttonStyle.border
-                    +padding {
-                        padding = buttonStyle.padding
-                        +layout {
-                            justifyContent = JustifyContent.CENTER
-                            alignItems = ItemAlign.CENTER
-                            properties.nodes.forEach {
-                                +it
-                            }
-                        }
-                    }
-                }
+    override fun asNodes(): List<Node<*, *>> = listOf(card {
+        val buttonStyle = when {
+            properties.disabled -> properties.theme.disabledStyle
+            state.pressed -> properties.theme.pressedStyle
+            state.hovered -> properties.theme.hoveredStyle
+            state.focused -> properties.theme.focusedStyle
+            else -> properties.theme.defaultStyle
+        }
+        theme = buttonStyle.cardTheme
+        +layout {
+            justifyContent = JustifyContent.CENTER
+            alignItems = ItemAlign.CENTER
+            properties.nodes.forEach {
+                +it
             }
-    )
+        }
+    })
 
     override fun handle(event: Event) {
         if (event.phase != Phase.BUBBLE && event.phase != Phase.TARGET)

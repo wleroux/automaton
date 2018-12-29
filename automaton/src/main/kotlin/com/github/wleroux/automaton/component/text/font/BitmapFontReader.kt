@@ -99,7 +99,7 @@ object BitmapFontReader {
             val value = keyValueMatcher.group(2)
             when (key) {
                 "lineHeight" -> lineHeight = intValue(value)
-                "buttonBase" -> base = intValue(value)
+                "card" -> base = intValue(value)
                 "scaleW" -> scaleW = intValue(value)
                 "scaleH" -> scaleH = intValue(value)
                 "pages" -> pages = intValue(value)

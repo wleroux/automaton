@@ -6,7 +6,7 @@ import kotlin.reflect.KClass
 
 @NodeBuilderDslMarker
 class ContextConsumerBuilder<ContextProperties: Any>(private val context: Context<ContextProperties>, private val key: Any?) {
-    var block:  (ContextConsumerNodeCollector).(ContextProperties) -> Unit = {}
+    var block: ContextConsumerNodeCollector.(ContextProperties) -> Unit = {}
 
     @Suppress("UNCHECKED_CAST")
     fun build() =

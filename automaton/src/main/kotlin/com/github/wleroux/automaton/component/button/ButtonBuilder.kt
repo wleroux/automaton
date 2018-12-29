@@ -1,6 +1,5 @@
 package com.github.wleroux.automaton.component.button
 
-import com.github.wleroux.automaton.theme.ButtonTheme
 import com.github.wleroux.automaton.theme.DEFAULT_THEME
 import com.github.wleroux.keact.api.Node
 import com.github.wleroux.keact.api.component.NodeBuilderDslMarker

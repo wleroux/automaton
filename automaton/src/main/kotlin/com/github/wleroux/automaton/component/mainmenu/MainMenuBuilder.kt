@@ -1,8 +1,10 @@
 package com.github.wleroux.automaton.component.mainmenu
 
 import com.github.wleroux.automaton.component.button.ButtonBuilder.Companion.button
+import com.github.wleroux.automaton.component.card.CardBuilder.Companion.card
 import com.github.wleroux.automaton.component.text.TextBuilder.Companion.text
-import com.github.wleroux.automaton.component.theme.ThemeContext
+import com.github.wleroux.automaton.theme.ThemeContext
+import com.github.wleroux.automaton.loadFont
 import com.github.wleroux.keact.api.component.NodeBuilderDslMarker
 import com.github.wleroux.keact.api.component.layout.ContentAlign
 import com.github.wleroux.keact.api.component.layout.Direction
@@ -23,34 +25,71 @@ class MainMenuBuilder(val key: Any? = null) {
 
     fun build() = ThemeContext.consumer { contextTheme ->
         +layout {
-            direction = Direction.COLUMN_REVERSE
             justifyContent = JustifyContent.CENTER
             alignContent = ContentAlign.CENTER
-            alignItems = ItemAlign.STRETCH
 
-            +button {
-                theme = contextTheme.primaryButtonTheme
+            +card {
+                theme = contextTheme.primaryCardTheme
 
-                +text {
-                    text = "New Game"
-                }
-                clickHandler = {
-                    this@MainMenuBuilder.startGameHandler()
-                }
-            }
-            +button {
-                theme = contextTheme.primaryButtonTheme
-                disabled = true
-                +text { text = "Load Game" }
-                clickHandler = {
-                    this@MainMenuBuilder.loadGameHandler()
-                }
-            }
-            +button {
-                theme = contextTheme.secondaryButtonTheme
-                +text { text = "Quit" }
-                clickHandler = {
-                    this@MainMenuBuilder.quitHandler()
+                +layout {
+                    direction = Direction.COLUMN_REVERSE
+                    justifyContent = JustifyContent.CENTER
+                    alignContent = ContentAlign.CENTER
+                    alignItems = ItemAlign.STRETCH
+
+                    +button {
+                        theme = contextTheme.primaryButtonTheme
+
+                        +text {
+                            text = "New Game"
+                            theme = contextTheme.primaryButtonTheme.defaultStyle.textTheme
+                        }
+                        clickHandler = {
+                            this@MainMenuBuilder.startGameHandler()
+                        }
+                    }
+                    +button {
+                        theme = contextTheme.primaryButtonTheme
+                        +text {
+                            text = "Load Game"
+                            theme = contextTheme.primaryButtonTheme.defaultStyle.textTheme
+                        }
+                        clickHandler = {
+                            this@MainMenuBuilder.loadGameHandler()
+                        }
+                    }
+                    +button {
+                        theme = contextTheme.primaryButtonTheme
+                        disabled = true
+                        +text {
+                            text = "Settings"
+                            theme = contextTheme.primaryButtonTheme.defaultStyle.textTheme
+                        }
+                        clickHandler = {
+                            this@MainMenuBuilder.loadGameHandler()
+                        }
+                    }
+                    +button {
+                        theme = contextTheme.secondaryButtonTheme
+                        disabled = true
+                        +text {
+                            text = "Mods"
+                            theme = contextTheme.secondaryButtonTheme.defaultStyle.textTheme
+                        }
+                        clickHandler = {
+                            this@MainMenuBuilder.loadGameHandler()
+                        }
+                    }
+                    +button {
+                        theme = contextTheme.secondaryButtonTheme
+                        +text {
+                            text = "Quit"
+                            theme = contextTheme.primaryButtonTheme.defaultStyle.textTheme
+                        }
+                        clickHandler = {
+                            this@MainMenuBuilder.quitHandler()
+                        }
+                    }
                 }
             }
         }

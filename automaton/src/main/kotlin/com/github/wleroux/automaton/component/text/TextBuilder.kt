@@ -1,8 +1,5 @@
 package com.github.wleroux.automaton.component.text
 
-import com.github.wleroux.automaton.component.text.font.Font
-import com.github.wleroux.automaton.loadFont
-import com.github.wleroux.keact.api.theme.Color
 import com.github.wleroux.keact.api.Node
 import com.github.wleroux.keact.api.component.NodeBuilderDslMarker
 
@@ -14,14 +11,10 @@ class TextBuilder(val key: Any? = null) {
     }
 
     lateinit var text: String
-    var size: Int = 24
-    var color: Color = Color.WHITE
-    var font: Font = loadFont("font/Roboto_Slab/Roboto_Slab-Regular.fnt")
+    var theme: TextTheme = TextTheme()
 
     fun build() = Node(TextComponent::class, TextComponent.TextProperties(
             text,
-            size,
-            color,
-            font
+            theme
     ), key)
 }
