@@ -62,11 +62,11 @@ class TextComponent: Component<Unit, TextComponent.TextProperties>(Unit) {
             setUniform("BaseColor", texture)
 
             setUniform("Color", properties.theme.color)
-            setUniform("Width", 0.4f)
-            setUniform("Edge", 0.01f)
+            setUniform("Width", 0.5f)
+            setUniform("Edge", 0.1f)
 
             setUniform("BorderColor", Color.BLACK)
-            setUniform("BorderWidth", 0.7f)
+            setUniform("BorderWidth", 0.0f)
             setUniform("BorderEdge", 0.1f)
             setUniform("BorderOffset", Vector2f(0f, 0f))
             mesh.bind {

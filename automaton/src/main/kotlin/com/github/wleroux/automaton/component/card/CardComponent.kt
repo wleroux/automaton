@@ -74,10 +74,10 @@ class CardComponent : Component<Unit, CardComponent.CardProperties>(Unit) {
     texture = Texture(width, height, pixels, GL_RGBA8, GL_RGBA)
     mesh?.close()
     mesh = Mesh(arrayOf(
-            0f, 0f, 0f, 0f,
-            width.toFloat(), 0f, 1f, 0f,
-            width.toFloat(), height.toFloat(), 1f, 1f,
-            0f, height.toFloat(), 0f, 1f
+            0f, 0f, 0f, 1f,
+            width.toFloat(), 0f, 1f, 1f,
+            width.toFloat(), height.toFloat(), 1f, 0f,
+            0f, height.toFloat(), 0f, 0f
     ), arrayOf(0, 1, 2, 2, 3, 0),
             listOf(Mesh.Attribute("position", GL_FLOAT, 2), Mesh.Attribute("texCoord", GL_FLOAT, 2)))
   }
@@ -85,7 +85,7 @@ class CardComponent : Component<Unit, CardComponent.CardProperties>(Unit) {
   var prevWidth: Int = 0
   var prevHeight: Int = 0
   override fun render() {
-    if (prevWidth != width && prevHeight != height) {
+    if (prevWidth != width || prevHeight != height) {
       refreshCard()
       prevWidth = width
       prevHeight = height

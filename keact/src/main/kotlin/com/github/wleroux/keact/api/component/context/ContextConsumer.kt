@@ -6,7 +6,7 @@ import com.github.wleroux.keact.api.Node
 class ContextConsumer<ContextProperties: Any>: Component<Unit, ContextConsumer.ContextConsumerProperties<ContextProperties>>(Unit) {
     data class ContextConsumerProperties<ContextProperties: Any>(
         val context: Context<ContextProperties>,
-        val nodes:  (ContextConsumerNodeCollector).(ContextProperties) -> Unit
+        val nodes:  ContextConsumerNodeCollector.(ContextProperties) -> Unit
     )
 
     private var updatePending = false

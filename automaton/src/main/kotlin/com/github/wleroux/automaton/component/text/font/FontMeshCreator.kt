@@ -78,4 +78,19 @@ object FontMeshCreator {
         val sizeFactor = size.toFloat() / font.info.size.toFloat()
         return font.common.lineHeight.toFloat() * sizeFactor
     }
+
+    fun getCursorPosition(x: Int, y: Int, text: String, font: Font, size: Int): Int {
+        val sizeFactor = size.toFloat() / font.info.size.toFloat()
+        var cursorX = 0f
+        text.toCharArray().forEachIndexed { cursorPosition, char ->
+            val character = font.characters[char.toInt()] ?: return@forEachIndexed
+            val characterWidth = character.xAdvance * sizeFactor
+            when {
+                (cursorX + characterWidth / 2) > x -> return cursorPosition - 1
+                (cursorX + characterWidth) > x -> return cursorPosition
+                else -> cursorX += characterWidth
+            }
+        }
+        return text.length
+    }
 }

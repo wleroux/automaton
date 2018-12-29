@@ -4,6 +4,7 @@ data class Color(val r: Float, val g: Float, val b: Float, val a: Float) {
     companion object {
         val WHITE = Color(0xffffff)
         val BLACK = Color(0x000000)
+
         val BLUEGREY_50: Color = Color(0xeceff1)
         val BLUEGREY_100: Color = Color(0xcfd8dc)
         val BLUEGREY_200: Color = Color(0xb0bec5)
