@@ -1,6 +1,7 @@
 package com.github.wleroux.automaton.program
 
 import com.github.wleroux.automaton.math.*
+import com.github.wleroux.keact.api.theme.Color
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11.GL_TRUE
 import org.lwjgl.opengl.GL20.*
@@ -47,7 +48,7 @@ class Program private constructor(val id: Int, private val uniformLocations: Map
         glShaderSource(shader, source)
         glCompileShader(shader)
         if ( glGetShaderi(shader, GL_COMPILE_STATUS) != GL_TRUE) {
-          throw RuntimeException("Could not compile gl: ${glGetShaderInfoLog(shader)}")
+          throw RuntimeException("Could not compile gl: ${glGetShaderInfoLog(shader)}: $source")
         }
 
         glAttachShader(program, shader)
@@ -93,7 +94,7 @@ class Program private constructor(val id: Int, private val uniformLocations: Map
   fun setUniform(uniform: String, value: Quaternion) {
     glUniform4f(uniformLocations[uniform]!!, value.x, value.y, value.z, value.w)
   }
-  fun setUniform(uniform: String, value: Color4f) {
+  fun setUniform(uniform: String, value: Color) {
     glUniform4f(uniformLocations[uniform]!!, value.r, value.g, value.b, value.a)
   }
   fun setUniform(uniform: String, value: Matrix4f) {

@@ -2,13 +2,11 @@ package com.github.wleroux.keact.api.component.padding
 
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.Node
+import com.github.wleroux.keact.api.theme.Padding
 
 class PaddingComponent: Component<Unit, PaddingComponent.PaddingProperties>() {
     data class PaddingProperties(
-            val top: Int,
-            val right: Int,
-            val bottom: Int,
-            val left: Int,
+            val padding: Padding,
             val nodes: List<Node<*, *>>
     )
 
@@ -19,17 +17,17 @@ class PaddingComponent: Component<Unit, PaddingComponent.PaddingProperties>() {
 
     override fun preferredWidth(parentWidth: Int, parentHeight: Int): Int =
             childComponents.values.map {
-                properties.left + properties.right + it.preferredWidth(parentWidth, parentHeight)
-            }.max() ?: properties.left + properties.right
+                properties.padding.left + properties.padding.right + it.preferredWidth(parentWidth, parentHeight)
+            }.max() ?: properties.padding.left + properties.padding.right
     override fun preferredHeight(parentWidth: Int, parentHeight: Int): Int =
             childComponents.values.map {
-                properties.top + properties.bottom + it.preferredHeight(parentWidth, parentHeight)
-            }.max() ?: properties.top + properties.bottom
+                properties.padding.top + properties.padding.bottom + it.preferredHeight(parentWidth, parentHeight)
+            }.max() ?: properties.padding.top + properties.padding.bottom
     override fun render(): Unit = childComponents.values.forEach { childComponent ->
-        childComponent.x = x + properties.left
-        childComponent.y = y + properties.bottom
-        childComponent.width = width - properties.left - properties.right
-        childComponent.height = height - properties.top - properties.bottom
+        childComponent.x = x + properties.padding.left
+        childComponent.y = y + properties.padding.bottom
+        childComponent.width = width - properties.padding.left - properties.padding.right
+        childComponent.height = height - properties.padding.top - properties.padding.bottom
         childComponent.render()
     }
 }

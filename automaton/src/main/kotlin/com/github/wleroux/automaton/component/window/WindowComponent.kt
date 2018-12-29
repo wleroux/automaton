@@ -62,7 +62,7 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>() {
         glfwShowWindow(window)
         GL.createCapabilities()
 
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f)
+        glClearColor(0.3f, 0.3f, 0.3f, 0.0f)
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         glDepthMask(true)
@@ -90,7 +90,7 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>() {
             return
         }
 
-        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f)
+        GL11.glClearColor(0.1f, 0.1f, 0.1f, 0.0f)
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT or GL11.GL_DEPTH_BUFFER_BIT)
         GL11.glEnable(GL11.GL_DEPTH_TEST)
 

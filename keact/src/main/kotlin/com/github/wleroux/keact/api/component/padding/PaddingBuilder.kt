@@ -1,6 +1,7 @@
 package com.github.wleroux.keact.api.component.padding
 
 import com.github.wleroux.keact.api.Node
+import com.github.wleroux.keact.api.theme.Padding
 
 class PaddingBuilder(val key: Any? = null) {
     companion object {
@@ -8,11 +9,7 @@ class PaddingBuilder(val key: Any? = null) {
                 PaddingBuilder(key).apply(block).build()
     }
 
-    var top: Int = 0
-    var right: Int = 0
-    var bottom: Int = 0
-    var left: Int = 0
-
+    var padding: Padding = Padding()
     private val nodes = mutableListOf<Node<*, *>>()
 
     operator fun Node<*,*>.unaryPlus() {
@@ -20,6 +17,6 @@ class PaddingBuilder(val key: Any? = null) {
     }
 
     fun build() = Node(PaddingComponent::class, PaddingComponent.PaddingProperties(
-            top, right, bottom, left, nodes
+            padding, nodes
     ), key)
 }

@@ -1,8 +1,8 @@
 package com.github.wleroux.automaton.component.button
 
-import com.github.wleroux.automaton.math.Color4f
 import com.github.wleroux.keact.api.Node
 import com.github.wleroux.keact.api.event.Event
+import com.github.wleroux.keact.api.theme.Color
 
 class ButtonBuilder(private val key: Any? = null) {
     companion object {
@@ -10,11 +10,11 @@ class ButtonBuilder(private val key: Any? = null) {
                 ButtonBuilder(key).apply(block).build()
     }
 
-    var defaultColor: Color4f = Color4f(0.5f, 0.5f, 0.5f, 1f)
-    var disabledColor: Color4f = defaultColor
-    var hoveredColor: Color4f =  Color4f(0.7f, 0.7f, 0.7f, 1f)
-    var pressedColor: Color4f  =  Color4f(0.3f, 0.3f, 0.3f, 1f)
-    var focusedColor: Color4f = defaultColor
+    var default: ButtonComponent.ButtonStateProperties = ButtonComponent.ButtonStateProperties(color = Color(0.5f, 0.5f, 0.5f, 1f))
+    var disabled: ButtonComponent.ButtonStateProperties = ButtonComponent.ButtonStateProperties(color = default.color)
+    var hovered: ButtonComponent.ButtonStateProperties = ButtonComponent.ButtonStateProperties(color = Color(0.7f, 0.7f, 0.7f, 1f))
+    var pressed: ButtonComponent.ButtonStateProperties = ButtonComponent.ButtonStateProperties(color = Color(0.3f, 0.3f, 0.3f, 1f))
+    var focused: ButtonComponent.ButtonStateProperties = ButtonComponent.ButtonStateProperties(color = default.color)
 
     var clickHandler: (Event) -> Unit = {}
     private val nodes = mutableListOf<Node<*, *>>()
@@ -24,6 +24,6 @@ class ButtonBuilder(private val key: Any? = null) {
 
     fun build() =
             Node(ButtonComponent::class, ButtonComponent.ButtonProperties(
-                    defaultColor, disabledColor, hoveredColor, pressedColor, focusedColor, clickHandler, nodes
+                    default, disabled, hovered, pressed, focused, clickHandler, nodes
             ), key)
 }

@@ -63,4 +63,7 @@ class Mesh(vertices: Array<Float>, indices: Array<Int>, private val attributes: 
     fun draw() {
         glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0)
     }
+
+    fun close() {
+    }
 }

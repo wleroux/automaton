@@ -4,7 +4,7 @@ import com.github.wleroux.automaton.component.text.font.Font
 import com.github.wleroux.automaton.component.text.font.FontMeshCreator
 import com.github.wleroux.automaton.loadText
 import com.github.wleroux.automaton.loadTexture
-import com.github.wleroux.automaton.math.Color4f
+import com.github.wleroux.keact.api.theme.Color
 import com.github.wleroux.automaton.math.Matrix4f
 import com.github.wleroux.automaton.math.Vector2f
 import com.github.wleroux.automaton.program.Mesh
@@ -17,7 +17,7 @@ class TextComponent: Component<Unit, TextComponent.TextProperties>() {
     data class TextProperties(
             val text: String,
             val size: Int,
-            val color: Color4f,
+            val color: Color,
             val font: Font
     )
 
@@ -71,10 +71,10 @@ class TextComponent: Component<Unit, TextComponent.TextProperties>() {
             setUniform("Width", 0.4f)
             setUniform("Edge", 0.01f)
 
-            setUniform("BorderColor", Color4f(0.0f, 0.0f, 0.0f, 1.0f))
-            setUniform("BorderWidth", 0.4f)
+            setUniform("BorderColor", Color.BLACK)
+            setUniform("BorderWidth", 0.7f)
             setUniform("BorderEdge", 0.1f)
-            setUniform("BorderOffset", Vector2f(-0.01f, 0.01f))
+            setUniform("BorderOffset", Vector2f(0f, 0f))
             mesh.bind {
                 mesh.draw()
             }
