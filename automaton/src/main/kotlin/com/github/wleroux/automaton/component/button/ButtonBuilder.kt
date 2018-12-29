@@ -14,7 +14,7 @@ class ButtonBuilder(private val key: Any? = null) {
     }
 
     var disabled: Boolean = false
-    var theme: ButtonTheme = DEFAULT_THEME.defaultButtonTheme
+    var theme: ButtonTheme = DEFAULT_THEME.primaryButtonTheme
 
     var clickHandler: (Event) -> Unit = {}
     private val nodes = mutableListOf<Node<*, *>>()

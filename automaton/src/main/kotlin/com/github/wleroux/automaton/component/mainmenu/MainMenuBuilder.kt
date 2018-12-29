@@ -29,7 +29,7 @@ class MainMenuBuilder(val key: Any? = null) {
             alignItems = ItemAlign.STRETCH
 
             +button {
-                theme = contextTheme.defaultButtonTheme
+                theme = contextTheme.primaryButtonTheme
 
                 +text {
                     text = "New Game"
@@ -39,14 +39,15 @@ class MainMenuBuilder(val key: Any? = null) {
                 }
             }
             +button {
-                theme = contextTheme.defaultButtonTheme
+                theme = contextTheme.primaryButtonTheme
+                disabled = true
                 +text { text = "Load Game" }
                 clickHandler = {
                     this@MainMenuBuilder.loadGameHandler()
                 }
             }
             +button {
-                theme = contextTheme.defaultButtonTheme
+                theme = contextTheme.secondaryButtonTheme
                 +text { text = "Quit" }
                 clickHandler = {
                     this@MainMenuBuilder.quitHandler()
