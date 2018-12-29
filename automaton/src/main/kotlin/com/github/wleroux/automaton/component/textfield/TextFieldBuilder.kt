@@ -8,7 +8,7 @@ class TextFieldBuilder(private val key: Any? = null) {
                 TextFieldBuilder(key).apply(block).build()
     }
 
-    var theme: TextFieldTheme = TextFieldTheme()
+    lateinit var theme: TextFieldTheme
     var textChangeHandler: (String) -> Boolean = {true}
     var placeholderText: String = ""
     var initialText: String = ""

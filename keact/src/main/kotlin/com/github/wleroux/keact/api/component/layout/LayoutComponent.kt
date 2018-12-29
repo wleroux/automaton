@@ -2,6 +2,7 @@ package com.github.wleroux.keact.api.component.layout
 
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.Node
+import kotlin.math.max
 
 
 /**
@@ -57,18 +58,26 @@ class LayoutComponent : Component<Unit, LayoutComponent.LayoutProperties>(Unit) 
     return properties.direction.y(maxMainSpace, maxCrossSpace)
   }
   private fun maxCrossSpace(componentRows: List<List<Component<*, *>>>, parentWidth: Int, parentHeight: Int): Int {
-    return componentRows.map { componentRow->
-      componentRow
-              .map { it.cross(properties.direction, parentWidth, parentHeight) }
-              .max() ?: 0
-    }.sum()
+    var sum = 0
+    componentRows.forEach { componentRow ->
+      var max = 0
+      componentRow.forEach { component ->
+        max = max(max, component.cross(properties.direction, parentWidth, parentHeight))
+      }
+      sum += max
+    }
+    return sum
   }
   private fun maxMainSpace(componentRows: List<List<Component<*, *>>>, parentWidth: Int, parentHeight: Int): Int {
-    return componentRows.map { componentRow->
-      componentRow
-              .map { it.main(properties.direction, parentWidth, parentHeight) }
-              .sum()
-    }.max() ?: 0
+    var max = 0
+    componentRows.forEach { componentRow ->
+      var sum = 0
+      componentRow.forEach { component ->
+        sum += component.main(properties.direction, parentWidth, parentHeight)
+      }
+      max = max(max, sum)
+    }
+    return max
   }
 
   override fun findComponentAt(x: Int, y: Int): Component<*, *>? {

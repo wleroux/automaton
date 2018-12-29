@@ -33,17 +33,17 @@ class TextComponent: Component<Unit, TextComponent.TextProperties>(Unit) {
 
     lateinit var mesh: Mesh
     lateinit var texture: Texture
-    var textWidth: Float = 0f
-    var textHeight: Float = 0f
+    var textWidth: Int = 0
+    var textHeight: Int = 0
     override fun componentDidUpdate(previousProperties: TextProperties, previousState: Unit) {
         mesh = FontMeshCreator.generateTextMesh(properties.text, properties.theme.font, properties.theme.size)
-        textWidth = FontMeshCreator.getWidth(properties.text, properties.theme.font, properties.theme.size)
-        textHeight = FontMeshCreator.getHeight(properties.text, properties.theme.font, properties.theme.size)
+        textWidth = FontMeshCreator.getWidth(properties.text, properties.theme.font, properties.theme.size).toInt()
+        textHeight = FontMeshCreator.getHeight(properties.text, properties.theme.font, properties.theme.size).toInt()
         texture = loadTexture(checkNotNull(properties.theme.font.pages[0]))
     }
 
-    override fun preferredWidth(parentWidth: Int, parentHeight: Int): Int = textWidth.toInt()
-    override fun preferredHeight(parentWidth: Int, parentHeight: Int): Int = textHeight.toInt()
+    override fun preferredWidth(parentWidth: Int, parentHeight: Int): Int = textWidth
+    override fun preferredHeight(parentWidth: Int, parentHeight: Int): Int = textHeight
     override fun render() {
         program.use {
             glViewport(x, y, width, height)

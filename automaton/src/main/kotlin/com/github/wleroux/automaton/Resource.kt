@@ -25,20 +25,23 @@ fun loadFont(file: String): Font {
     return BitmapFontReader.read(file)
 }
 
+private val textureCache = mutableMapOf<String, Texture>()
 fun loadTexture(file: String): Texture {
-    MemoryStack.stackPush().use { stack ->
-        val width = stack.mallocInt(1)
-        val height = stack.mallocInt(1)
-        val components = stack.mallocInt(1)
+    return textureCache.computeIfAbsent(file) {
+        MemoryStack.stackPush().use { stack ->
+            val width = stack.mallocInt(1)
+            val height = stack.mallocInt(1)
+            val components = stack.mallocInt(1)
 
-        val byteBuffer = loadByteBuffer(file)
-        require(stbi_info_from_memory(byteBuffer, width, height, components)) {
-            "Failed to read image information: ${stbi_failure_reason()}"
+            val byteBuffer = loadByteBuffer(file)
+            require(stbi_info_from_memory(byteBuffer, width, height, components)) {
+                "Failed to read image information: ${stbi_failure_reason()}"
+            }
+
+            stbi_set_flip_vertically_on_load(true)
+            val imageBuffer = stbi_load_from_memory(byteBuffer, width, height, components, 4)!!
+            return@computeIfAbsent Texture(width[0], height[0], imageBuffer)
         }
-
-        stbi_set_flip_vertically_on_load(true)
-        val imageBuffer = stbi_load_from_memory(byteBuffer, width, height, components, 4)!!
-        return Texture(width[0], height[0], imageBuffer)
     }
 }
 

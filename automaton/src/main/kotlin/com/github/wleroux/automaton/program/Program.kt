@@ -2,6 +2,7 @@ package com.github.wleroux.automaton.program
 
 import com.github.wleroux.automaton.math.*
 import com.github.wleroux.keact.api.theme.Color
+import com.github.wleroux.keact.api.theme.Padding
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11.GL_TRUE
 import org.lwjgl.opengl.GL20.*
@@ -96,6 +97,9 @@ class Program private constructor(val id: Int, private val uniformLocations: Map
   }
   fun setUniform(uniform: String, value: Color) {
     glUniform4f(uniformLocations[uniform]!!, value.r, value.g, value.b, value.a)
+  }
+  fun setUniform(uniform: String, value: Padding) {
+    glUniform4f(uniformLocations[uniform]!!, value.top.toFloat(), value.right.toFloat(), value.bottom.toFloat(), value.left.toFloat())
   }
   fun setUniform(uniform: String, value: Matrix4f) {
     val buffer = BufferUtils.createFloatBuffer(16)

@@ -44,12 +44,31 @@ class MainMenuBuilder(val key: Any? = null) {
                         placeholderText = "What is your name?"
                     }
 
+                    +textField {
+                        theme = contextTheme.primaryTextFieldTheme
+                        placeholderText = "What is your name?"
+                    }
+
+                    +textField {
+                        theme = contextTheme.primaryTextFieldTheme
+                        placeholderText = "What is your name?"
+                    }
+
+                    +textField {
+                        theme = contextTheme.primaryTextFieldTheme
+                        placeholderText = "What is your name?"
+                    }
+
+                    +textField {
+                        theme = contextTheme.primaryTextFieldTheme
+                        placeholderText = "What is your name?"
+                    }
+
                     +button {
                         theme = contextTheme.primaryButtonTheme
-
                         +text {
-                            text = "New Game"
                             theme = contextTheme.primaryButtonTheme.defaultStyle.textTheme
+                            text = "New Game"
                         }
                         clickHandler = {
                             this@MainMenuBuilder.startGameHandler()
@@ -58,8 +77,8 @@ class MainMenuBuilder(val key: Any? = null) {
                     +button {
                         theme = contextTheme.primaryButtonTheme
                         +text {
-                            text = "Load Game"
                             theme = contextTheme.primaryButtonTheme.defaultStyle.textTheme
+                            text = "Load Game"
                         }
                         clickHandler = {
                             this@MainMenuBuilder.loadGameHandler()
@@ -69,8 +88,8 @@ class MainMenuBuilder(val key: Any? = null) {
                         theme = contextTheme.primaryButtonTheme
                         disabled = true
                         +text {
-                            text = "Settings"
                             theme = contextTheme.primaryButtonTheme.defaultStyle.textTheme
+                            text = "Settings"
                         }
                         clickHandler = {
                             this@MainMenuBuilder.loadGameHandler()
@@ -80,8 +99,8 @@ class MainMenuBuilder(val key: Any? = null) {
                         theme = contextTheme.secondaryButtonTheme
                         disabled = true
                         +text {
-                            text = "Mods"
                             theme = contextTheme.secondaryButtonTheme.defaultStyle.textTheme
+                            text = "Mods"
                         }
                         clickHandler = {
                             this@MainMenuBuilder.loadGameHandler()
@@ -90,8 +109,8 @@ class MainMenuBuilder(val key: Any? = null) {
                     +button {
                         theme = contextTheme.secondaryButtonTheme
                         +text {
-                            text = "Quit"
                             theme = contextTheme.primaryButtonTheme.defaultStyle.textTheme
+                            text = "Quit"
                         }
                         clickHandler = {
                             this@MainMenuBuilder.quitHandler()

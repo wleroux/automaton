@@ -11,7 +11,7 @@ class TextBuilder(val key: Any? = null) {
     }
 
     lateinit var text: String
-    var theme: TextTheme = TextTheme()
+    lateinit var theme: TextTheme
 
     fun build() = Node(TextComponent::class, TextComponent.TextProperties(
             text,

@@ -2,6 +2,8 @@ package com.github.wleroux.automaton.component.startscreen
 
 import com.github.wleroux.automaton.component.button.ButtonBuilder.Companion.button
 import com.github.wleroux.automaton.component.card.CardBuilder.Companion.card
+import com.github.wleroux.automaton.component.mainmenu.MainMenuBuilder
+import com.github.wleroux.automaton.component.mainmenu.MainMenuBuilder.Companion.mainMenu
 import com.github.wleroux.automaton.component.text.TextBuilder.Companion.text
 import com.github.wleroux.automaton.component.textfield.TextFieldBuilder.Companion.textField
 import com.github.wleroux.automaton.theme.ThemeContext
@@ -38,6 +40,17 @@ class StartScreenComponent: Component<String, Unit>("") {
                         +text {
                             theme = themeContext.primaryButtonTheme.defaultStyle.textTheme
                             text = state
+                        }
+                    }
+                    +mainMenu {
+                        quitHandler = {
+                            System.exit(1)
+                        }
+                        startGameHandler = {
+                            println("Start Game")
+                        }
+                        loadGameHandler = {
+                            println("Load Game")
                         }
                     }
                 }

@@ -13,12 +13,12 @@ object FontMeshCreator {
         var cursorX = 0f
         val cursorY = 0f
         var previousCharacterId: Int? = null
-        text.chars().forEach { characterId ->
-            val character = font.characters[characterId] ?: return@forEach
+        text.forEach { characterId ->
+            val character = font.characters[characterId.toInt()] ?: return@forEach
 
             // Kerning support
             previousCharacterId?.let {
-                cursorX += (font.kerning[previousCharacterId to characterId] ?: 0) * sizeFactor
+                cursorX += (font.kerning[previousCharacterId to characterId.toInt()] ?: 0) * sizeFactor
             }
 
             val characterX = cursorX + (character.xOffset.toFloat() * sizeFactor)
@@ -55,7 +55,7 @@ object FontMeshCreator {
             indexCount += 4
 
             cursorX += character.xAdvance * sizeFactor
-            previousCharacterId = characterId
+            previousCharacterId = characterId.toInt()
         }
 
         return Mesh(vertices.toTypedArray(), indices.toTypedArray(), listOf(
@@ -67,8 +67,8 @@ object FontMeshCreator {
     fun getWidth(text: String, font: Font, size: Int): Float {
         val sizeFactor = size.toFloat() / font.info.size.toFloat()
         var cursorX = 0f
-        text.chars().forEach { char ->
-            val character = font.characters[char] ?: return@forEach
+        text.forEach { char ->
+            val character = font.characters[char.toInt()] ?: return@forEach
             cursorX += character.xAdvance * sizeFactor
         }
         return cursorX
