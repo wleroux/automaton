@@ -12,6 +12,7 @@ val lwjglNatives = "natives-windows"
 
 dependencies {
     implementation(project(":keact"))
+    implementation(project(":bus"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation("org.lwjgl", "lwjgl", lwjglVersion)
@@ -26,11 +27,6 @@ dependencies {
     runtimeOnly("org.lwjgl", "lwjgl-openal", lwjglVersion, classifier = lwjglNatives)
     runtimeOnly("org.lwjgl", "lwjgl-opengl", lwjglVersion, classifier = lwjglNatives)
     runtimeOnly("org.lwjgl", "lwjgl-stb", lwjglVersion, classifier = lwjglNatives)
-    testImplementation("org.jetbrains.kotlin:kotlin-cube")
-    testImplementation("org.jetbrains.kotlin:kotlin-cube-junit")
-
-    testImplementation("org.jetbrains.kotlin:kotlin-cube")
-    testImplementation("org.jetbrains.kotlin:kotlin-cube-junit")
 }
 
 application {

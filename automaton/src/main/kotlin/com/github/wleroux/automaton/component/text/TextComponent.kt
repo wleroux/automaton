@@ -3,13 +3,13 @@ package com.github.wleroux.automaton.component.text
 import com.github.wleroux.automaton.component.text.font.FontMeshCreator
 import com.github.wleroux.automaton.loadText
 import com.github.wleroux.automaton.loadTexture
-import com.github.wleroux.keact.api.theme.Color
 import com.github.wleroux.automaton.math.Matrix4f
 import com.github.wleroux.automaton.math.Vector2f
 import com.github.wleroux.automaton.program.Mesh
 import com.github.wleroux.automaton.program.Program
 import com.github.wleroux.automaton.program.Texture
 import com.github.wleroux.keact.api.Component
+import com.github.wleroux.keact.api.theme.Color
 import org.lwjgl.opengl.GL11.*
 
 class TextComponent: Component<Unit, TextComponent.TextProperties>(Unit) {

@@ -2,7 +2,6 @@ package com.github.wleroux.automaton.math
 
 import java.lang.Math.sqrt
 import java.nio.FloatBuffer
-import kotlin.math.roundToInt
 
 data class Vector3f(var x: Float, var y: Float, var z: Float) {
   val magnitude: Float

@@ -1,2 +1,2 @@
 rootProject.name = "automaton"
-include("automaton", "keact")
+include("automaton", "keact", "bus")

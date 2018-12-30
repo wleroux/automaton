@@ -1,6 +1,9 @@
 package com.github.wleroux.automaton.program
 
-import com.github.wleroux.automaton.math.*
+import com.github.wleroux.automaton.math.Matrix4f
+import com.github.wleroux.automaton.math.Quaternion
+import com.github.wleroux.automaton.math.Vector2f
+import com.github.wleroux.automaton.math.Vector3f
 import com.github.wleroux.keact.api.theme.Color
 import com.github.wleroux.keact.api.theme.Padding
 import org.lwjgl.BufferUtils

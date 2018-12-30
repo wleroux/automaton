@@ -7,7 +7,6 @@ import com.github.wleroux.keact.api.Node
 import com.github.wleroux.keact.api.component.layout.ItemAlign
 import com.github.wleroux.keact.api.component.layout.JustifyContent
 import com.github.wleroux.keact.api.component.layout.LayoutBuilder.Companion.layout
-import com.github.wleroux.keact.api.component.padding.PaddingBuilder.Companion.padding
 import com.github.wleroux.keact.api.dispatch
 import com.github.wleroux.keact.api.event.Event
 import com.github.wleroux.keact.api.event.Phase

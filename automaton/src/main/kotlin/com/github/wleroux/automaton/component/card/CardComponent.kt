@@ -4,10 +4,10 @@ import com.github.wleroux.automaton.loadText
 import com.github.wleroux.automaton.math.Matrix4f.Companion.orthogonal
 import com.github.wleroux.automaton.program.Mesh
 import com.github.wleroux.automaton.program.Program
-import com.github.wleroux.automaton.program.Texture
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.Node
-import org.lwjgl.opengl.GL11.*
+import org.lwjgl.opengl.GL11.GL_FLOAT
+import org.lwjgl.opengl.GL11.glViewport
 
 class CardComponent : Component<Unit, CardComponent.CardProperties>(Unit) {
   data class CardProperties(
