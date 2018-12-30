@@ -1,4 +1,4 @@
-package com.github.wleroux.automaton.component.cube
+package com.github.wleroux.automaton.component.launcher.game.viewport
 
 import com.github.wleroux.automaton.loadMesh
 import com.github.wleroux.automaton.loadText
@@ -12,9 +12,9 @@ import com.github.wleroux.automaton.program.Program
 import com.github.wleroux.keact.api.Component
 import org.lwjgl.opengl.GL11
 
-class CubeComponent: Component<Unit, Unit>(Unit) {
-    lateinit var program: Program
-    lateinit var model: Model
+class GameViewportComponent: Component<Unit, Unit>(Unit) {
+    private lateinit var program: Program
+    private lateinit var model: Model
     override fun componentWillMount() {
         program = Program.build {
             vertexShader(loadText("automaton/shader/standard.vs.glsl"))

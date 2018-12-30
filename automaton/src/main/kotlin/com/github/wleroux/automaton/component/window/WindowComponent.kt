@@ -5,6 +5,7 @@ import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.Node
 import com.github.wleroux.keact.api.dispatch
 import com.github.wleroux.keact.api.event.Event
+import com.github.wleroux.keact.api.event.Phase
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.glfw.GLFWErrorCallback
@@ -113,6 +114,8 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
     }
 
     override fun handle(event: Event) {
+        if (event.phase == Phase.CAPTURE) return
+
         when {
             event.data is KeyStroke -> {
                 val keyStroke = event.data as KeyStroke
@@ -126,6 +129,9 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
                     focus = event.target
                     event.target.dispatch(Focus)
                 }
+            }
+            event.data is QuitToDesktop -> {
+                glfwSetWindowShouldClose(window, true)
             }
         }
     }

@@ -16,6 +16,7 @@ class DefaultMessageHandler(
     override fun <CommandResponse> handle(command: Command<CommandResponse>) = commandHandlers.first { it.canHandle(command) }.handle(command)
     override fun <QueryResponse> canHandle(query: Query<QueryResponse>) = queryHandlers.any { it.canHandle(query) }
     override fun <QueryResponse> handle(query: Query<QueryResponse>): QueryResponse = queryHandlers.first { it.canHandle(query) }.handle(query)
+    override fun <QueryResponse> gather(query: Query<QueryResponse>): List<QueryResponse> = queryHandlers.flatMap { it.gather(query) }
     override fun canHandle(event: Event) = eventHandlers.any { it.canHandle(event) }
     override fun handle(event: Event) = eventHandlers.filter { it.canHandle(event) }.forEach { it.handle(event) }
 }

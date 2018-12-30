@@ -12,9 +12,11 @@ import com.github.wleroux.keact.api.theme.Padding
 
 data class Theme(
         val fpsTextTheme: TextTheme,
+        val modalCardTheme: CardTheme,
         val primaryTextFieldTheme: TextFieldTheme,
         val secondaryTextFieldTheme: TextFieldTheme,
         val primaryCardTheme: CardTheme,
+        val primaryCardTextTheme: TextTheme,
         val primaryButtonTheme: ButtonTheme,
         val secondaryButtonTheme: ButtonTheme
 )
@@ -104,7 +106,12 @@ val DEFAULT_THEME by lazy {
         )
 
         Theme(
-                fpsTextTheme = defaultTextTheme,
+                fpsTextTheme = defaultTextTheme.copy(
+                        size = 15
+                ),
+                modalCardTheme = CardTheme(
+                        color = Color(0f, 0f, 0f, 0.5f)
+                ),
                 primaryTextFieldTheme = defaultTextFieldTheme,
                 secondaryTextFieldTheme = defaultTextFieldTheme.copy(
                         defaultStyle = defaultTextFieldStyle.copy(
@@ -171,6 +178,9 @@ val DEFAULT_THEME by lazy {
                         ),
                         padding = Padding( 8, 8, 8, 8),
                         margin = Padding(4, 4, 4, 4)
+                ),
+                primaryCardTextTheme = defaultTextTheme.copy(
+                        color = Color.BLACK
                 ),
                 primaryButtonTheme = ButtonTheme(
                         defaultStyle = defaultButtonStyle,

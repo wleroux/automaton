@@ -14,6 +14,8 @@ class DefaultQueryHandler<R, Q: Query<R>>(
     override fun <CommandResponse> canHandle(query: Query<CommandResponse>) =
             clazz.java.isInstance(query)
     @Suppress("UNCHECKED_CAST")
-    override fun <QueryResponse> handle(command: Query<QueryResponse>) =
-            queryProcessor.invoke(command as Q) as QueryResponse
+    override fun <QueryResponse> handle(query: Query<QueryResponse>) =
+            queryProcessor.invoke(query as Q) as QueryResponse
+    override fun <QueryResponse> gather(query: Query<QueryResponse>) =
+            listOf(handle(query))
 }

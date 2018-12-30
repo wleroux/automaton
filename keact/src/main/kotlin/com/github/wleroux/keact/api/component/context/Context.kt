@@ -21,7 +21,7 @@ class Context<ContextProperties: Any> {
 
     fun provider(key: Any? = null, block: ContextProviderBuilder<ContextProperties>.() -> Unit) =
             ContextProviderBuilder(this, key).apply(block).build()
-    fun consumer(key: Any? = null, block: (ContextConsumerNodeCollector).(ContextProperties) -> Unit) =
+    fun consumer(key: Any? = null, block: ContextConsumerNodeCollector.(ContextProperties) -> Unit) =
             ContextConsumerBuilder(this, key).apply {
                 this.block = block
             }.build()

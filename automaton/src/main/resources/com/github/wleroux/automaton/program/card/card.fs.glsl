@@ -30,6 +30,8 @@ uniform struct {
 
 out vec4 color;
 
+vec4 MarginColor = vec4(0f, 0f, 0f, 0f);
+
 bool isMargin(int x, int y);
 bool isBorder(int x, int y);
 void main()
@@ -37,11 +39,11 @@ void main()
     int realX = int(PosCoord.x * Width);
     int realY = int(PosCoord.y * Height);
     if (isMargin(realX, realY)) {
-        color = vec4(0f, 0f, 0f, 0f);
+        color = MarginColor;
     } else if (isBorder(realX, realY)) {
-        color = vec4(Border.Color.rgb, 1f);
+        color = Border.Color;
     } else {
-        color = vec4(Color.rgb, 1f);
+        color = Color;
     }
 }
 

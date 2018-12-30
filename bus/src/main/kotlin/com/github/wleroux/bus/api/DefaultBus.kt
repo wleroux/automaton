@@ -23,6 +23,9 @@ class DefaultBus: Bus {
         val queryHandler = messageHandlers.firstOrNull { it.canHandle(query) } ?: throw IllegalArgumentException("No query handlers for: $query")
         return queryHandler.handle(query)
     }
+    override fun <QueryResponse> gather(query: Query<QueryResponse>): List<QueryResponse> {
+        return messageHandlers.filter{ it.canHandle(query) }.flatMap { it.gather(query) }
+    }
     override fun publish(event: Event) {
         messageHandlers.filter {
             it.canHandle(event)

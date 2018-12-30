@@ -9,6 +9,7 @@ interface Bus {
     fun subscribe(messageHandler: MessageHandler): BusSubscription
     fun <CommandResponse> invoke(command: Command<CommandResponse>): CommandResponse
     fun <QueryResponse> request(query: Query<QueryResponse>): QueryResponse
+    fun <QueryResponse> gather(query: Query<QueryResponse>): List<QueryResponse>
     fun publish(event: Event)
 }
 
