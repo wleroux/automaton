@@ -39,31 +39,6 @@ class MainMenuBuilder(val key: Any? = null) {
                     alignContent = ContentAlign.CENTER
                     alignItems = ItemAlign.STRETCH
 
-                    +textField {
-                        theme = contextTheme.primaryTextFieldTheme
-                        placeholderText = "What is your name?"
-                    }
-
-                    +textField {
-                        theme = contextTheme.primaryTextFieldTheme
-                        placeholderText = "What is your name?"
-                    }
-
-                    +textField {
-                        theme = contextTheme.primaryTextFieldTheme
-                        placeholderText = "What is your name?"
-                    }
-
-                    +textField {
-                        theme = contextTheme.primaryTextFieldTheme
-                        placeholderText = "What is your name?"
-                    }
-
-                    +textField {
-                        theme = contextTheme.primaryTextFieldTheme
-                        placeholderText = "What is your name?"
-                    }
-
                     +button {
                         theme = contextTheme.primaryButtonTheme
                         +text {

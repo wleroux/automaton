@@ -35,6 +35,10 @@ class StartScreenComponent: Component<String, Unit>("") {
                             true
                         }
                     }
+                    +text {
+                        theme = themeContext.primaryButtonTheme.defaultStyle.textTheme
+                        text = state
+                    }
                     +button {
                         theme = themeContext.primaryButtonTheme
                         +text {
@@ -42,6 +46,7 @@ class StartScreenComponent: Component<String, Unit>("") {
                             text = state
                         }
                     }
+
                     +mainMenu {
                         quitHandler = {
                             System.exit(1)

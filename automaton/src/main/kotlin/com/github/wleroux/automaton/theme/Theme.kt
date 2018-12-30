@@ -27,7 +27,7 @@ val DEFAULT_THEME by lazy {
                         color = Color.BLUEGREY_800,
                         border = Border(
                                 width = Border.BorderWidth(0, 0, 0, 0),
-                                radius = Border.BorderRadius(2, 2, 2, 2)
+                                radius = Border.BorderRadius(4, 4, 4, 4)
                         ),
                         padding = Padding(4, 8, 4, 8),
                         margin = Padding(4, 4, 4,4)
@@ -38,7 +38,7 @@ val DEFAULT_THEME by lazy {
                 cardTheme = CardTheme(
                         border = Border(
                                 width = Border.BorderWidth(0, 0, 2, 0),
-                                radius = Border.BorderRadius(4, 4, 0, 0)
+                                radius = Border.BorderRadius(8, 8, 0, 0)
                         ),
                         padding = Padding(4, 8, 4, 8),
                         margin = Padding(4, 4, 4, 4)

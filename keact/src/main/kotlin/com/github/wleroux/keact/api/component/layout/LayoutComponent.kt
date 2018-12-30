@@ -3,6 +3,7 @@ package com.github.wleroux.keact.api.component.layout
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.Node
 import kotlin.math.max
+import kotlin.math.min
 
 
 /**
@@ -31,13 +32,13 @@ class LayoutComponent : Component<Unit, LayoutComponent.LayoutProperties>(Unit) 
         }
       }
     private fun Component<*, *>.cross(direction: Direction, width: Int, height: Int): Int {
-      val preferredWidth = this.preferredWidth(width, height)
-      val preferredHeight = this.preferredHeight(width, height)
+      val preferredWidth = min(width, this.preferredWidth(width, height))
+      val preferredHeight = min(height, this.preferredHeight(width, height))
       return direction.cross(preferredWidth, preferredHeight)
     }
     private fun Component<*, *>.main(direction: Direction, width: Int, height: Int): Int {
-      val preferredWidth = this.preferredWidth(width, height)
-      val preferredHeight = this.preferredHeight(width, height)
+      val preferredWidth = min(width, this.preferredWidth(width, height))
+      val preferredHeight = min(height, this.preferredHeight(width, height))
       return direction.main(preferredWidth, preferredHeight)
     }
   }
