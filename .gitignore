@@ -10,3 +10,6 @@ build
 *.ipr
 *.iws
 .idea
+
+# Ignore OpenGL generated files
+*.log

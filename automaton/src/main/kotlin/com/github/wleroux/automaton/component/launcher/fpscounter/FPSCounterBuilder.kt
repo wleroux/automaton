@@ -10,5 +10,5 @@ class FPSCounterBuilder(private val key: Any?) {
         fun fpsCounter(key: Any? = null, block: FPSCounterBuilder.() -> Unit = {}) = FPSCounterBuilder(key).apply(block).build()
     }
 
-    fun build() = Node(FPSCounterComponent::class, Unit, key)
+    fun build() = Node(key, FPSCounterComponent::class, Unit)
 }

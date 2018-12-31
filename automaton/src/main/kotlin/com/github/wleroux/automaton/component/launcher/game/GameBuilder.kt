@@ -11,7 +11,7 @@ class GameBuilder(private val key: Any?) {
     lateinit var quitToMainMenuHandler: () -> Unit
 
     fun build() =
-            Node(GameComponent::class, GameComponent.GameProperties(
+            Node(key, GameComponent::class, GameComponent.GameProperties(
                     quitToMainMenuHandler
-            ), key)
+            ))
 }

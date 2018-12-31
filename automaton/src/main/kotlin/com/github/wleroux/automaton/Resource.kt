@@ -6,6 +6,7 @@ import com.github.wleroux.automaton.program.Mesh
 import com.github.wleroux.automaton.program.Texture
 import com.github.wleroux.automaton.program.format.WavefrontObjReader
 import org.lwjgl.BufferUtils
+import org.lwjgl.glfw.GLFW.glfwGetCurrentContext
 import org.lwjgl.stb.STBImage.*
 import org.lwjgl.system.MemoryStack
 import java.nio.ByteBuffer
@@ -25,8 +26,11 @@ fun loadFont(file: String): Font {
     return BitmapFontReader.read(file)
 }
 
-private val textureCache = mutableMapOf<String, Texture>()
+private val windowTextureCache = mutableMapOf<Long, MutableMap<String, Texture>>()
 fun loadTexture(file: String): Texture {
+    val window = glfwGetCurrentContext()
+    val textureCache = windowTextureCache.computeIfAbsent(window) { mutableMapOf() }
+
     return textureCache.computeIfAbsent(file) {
         MemoryStack.stackPush().use { stack ->
             val width = stack.mallocInt(1)

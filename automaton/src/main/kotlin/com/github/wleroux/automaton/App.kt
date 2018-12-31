@@ -16,7 +16,6 @@ fun main(args: Array<String>) {
             +launcher()
         }
     }
-
     val windowComponent = windowNode.mount() as WindowComponent
     while (windowComponent.isActive) {
         windowComponent.update(windowNode.properties)

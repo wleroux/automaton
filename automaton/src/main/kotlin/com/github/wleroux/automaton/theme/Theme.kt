@@ -6,6 +6,7 @@ import com.github.wleroux.automaton.component.card.CardTheme
 import com.github.wleroux.automaton.component.text.TextTheme
 import com.github.wleroux.automaton.component.textfield.TextFieldStyle
 import com.github.wleroux.automaton.component.textfield.TextFieldTheme
+import com.github.wleroux.automaton.loadFont
 import com.github.wleroux.keact.api.theme.Border
 import com.github.wleroux.keact.api.theme.Color
 import com.github.wleroux.keact.api.theme.Padding
@@ -22,7 +23,7 @@ data class Theme(
 )
 
 val DEFAULT_THEME by lazy {
-        val defaultTextTheme = TextTheme()
+        val defaultTextTheme = TextTheme(font = loadFont("font/Roboto_Slab/Roboto_Slab-Regular.fnt"))
         val defaultButtonStyle = ButtonStyle(
                 textTheme = defaultTextTheme,
                 cardTheme = CardTheme(
@@ -37,6 +38,9 @@ val DEFAULT_THEME by lazy {
         )
         val defaultTextFieldStyle = TextFieldStyle(
                 textTheme = defaultTextTheme,
+                placeholderTextTheme = defaultTextTheme.copy(
+                        color = Color.BLUEGREY_300
+                ),
                 cardTheme = CardTheme(
                         border = Border(
                                 width = Border.BorderWidth(0, 0, 2, 0),

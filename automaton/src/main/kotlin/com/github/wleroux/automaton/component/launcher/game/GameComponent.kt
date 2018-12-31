@@ -7,8 +7,8 @@ import com.github.wleroux.automaton.component.launcher.game.viewport.GameViewpor
 import com.github.wleroux.automaton.component.window.event.*
 import com.github.wleroux.automaton.game.Game
 import com.github.wleroux.automaton.game.Plugin
+import com.github.wleroux.automaton.system.worldgenerator.GenerateWorld
 import com.github.wleroux.keact.api.Component
-import com.github.wleroux.keact.api.component.overlay.OverlayBuilder.Companion.overlay
 import com.github.wleroux.keact.api.dispatch
 import com.github.wleroux.keact.api.event.Event
 import com.github.wleroux.keact.api.event.Phase
@@ -16,7 +16,7 @@ import java.util.*
 
 class GameComponent: Component<GameComponent.GameState, GameComponent.GameProperties>(GameState()) {
     data class GameState(
-            val optionsOpened: Boolean = false
+            val paused: Boolean = false
     )
     data class GameProperties(
             val quitToMainMenu: () -> Unit
@@ -29,6 +29,8 @@ class GameComponent: Component<GameComponent.GameState, GameComponent.GameProper
         game = Game()
         plugins = ServiceLoader.load(Plugin::class.java).toList()
         plugins.forEach { it.initialize(game) }
+
+        game.invoke(GenerateWorld)
     }
 
     override fun componentWillUnmount() {
@@ -37,11 +39,13 @@ class GameComponent: Component<GameComponent.GameState, GameComponent.GameProper
 
     override fun asNodes() = listOf(GameContext.provider {
         value = game
-        +gameViewport("gameViewport")
-        if (state.optionsOpened) {
+        +gameViewport("gameViewport") {
+            this@gameViewport.game = this@GameComponent.game
+        }
+        if (state.paused) {
             +gameMenu("gameMenu") {
                 backToGameHandler = {
-                    state = state.copy(optionsOpened = false)
+                    state = state.copy(paused = false)
                     dispatch(RequestFocus)
                 }
                 quitToMainMenuHandler = properties.quitToMainMenu
@@ -62,7 +66,7 @@ class GameComponent: Component<GameComponent.GameState, GameComponent.GameProper
                 val keyStroke = event.data as KeyStroke
                 if (keyStroke.action == KeyAction.RELEASED) {
                     if (keyStroke.character == Keys.ESC) {
-                        state = state.copy(optionsOpened = true)
+                        state = state.copy(paused = true)
                         event.stopPropagation = true
                     }
                 }
@@ -73,6 +77,8 @@ class GameComponent: Component<GameComponent.GameState, GameComponent.GameProper
     private val gameTickEvent = GameTickedEvent(16L)
     override fun render() {
         super.render()
-        game.publish(gameTickEvent)
+        if (!state.paused) {
+            game.publish(gameTickEvent)
+        }
     }
 }

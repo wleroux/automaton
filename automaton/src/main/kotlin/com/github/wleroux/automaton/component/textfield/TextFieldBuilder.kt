@@ -15,5 +15,5 @@ class TextFieldBuilder(private val key: Any? = null) {
     var disabled: Boolean = false
 
     fun build() =
-            Node(TextFieldComponent::class, TextFieldComponent.TextFieldProperties(theme, initialText, placeholderText, textChangeHandler, disabled), key)
+            Node(key, TextFieldComponent::class, TextFieldComponent.TextFieldProperties(theme, initialText, placeholderText, textChangeHandler, disabled))
 }

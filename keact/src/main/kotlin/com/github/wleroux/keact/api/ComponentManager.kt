@@ -4,17 +4,17 @@ import com.github.wleroux.keact.api.event.Event
 import com.github.wleroux.keact.api.event.Phase
 
 fun <State: Any, Properties: Any> Component<State, Properties>.unmount() {
-    this.childComponents.values.forEach { childComponent -> childComponent.unmount() }
-    this.childComponents = emptyMap()
-    this.componentWillUnmount()
+    childComponents.values.forEach { childComponent -> childComponent.unmount() }
+    childComponents = emptyMap()
+    componentWillUnmount()
 }
 
 fun <State: Any, Properties: Any> Node<State, Properties>.mount(parentComponent: Component<*, *>? = null): Component<State, Properties> {
-    val component = this.type.java.newInstance()
+    val component = type.java.newInstance()
 
     component.componentWillMount()
     component.parentComponent = parentComponent
-    component.properties = this.properties
+    component.properties = properties
     component.componentDidMount()
 
     component.update(component.properties, true)
@@ -23,13 +23,13 @@ fun <State: Any, Properties: Any> Node<State, Properties>.mount(parentComponent:
 }
 
 fun <State: Any, Properties: Any> Component<State, Properties>.update(nextProperties: Properties, forceUpdate: Boolean = false) {
-    fun <NodeState: Any, NodeProperties: Any> nodeComponent(node: Node<NodeState, NodeProperties>, prev: Component<*, *>? = null, parent: Component<*, *>? = null): Component<NodeState, NodeProperties> {
+    fun <NodeState: Any, NodeProperties: Any> nodeComponent(node: Node<NodeState, NodeProperties>, prev: Component<*, *>? = null): Component<NodeState, NodeProperties> {
         val reuseComponent = if (prev != null) prev::class == node.type else false
-        val nodeComponent: Component<NodeState, NodeProperties> = if (reuseComponent) {
+        val nodeComponent = if (reuseComponent) {
             @Suppress("UNCHECKED_CAST")
             prev!! as Component<NodeState, NodeProperties>
         } else {
-            node.mount(parent)
+            node.mount(this@update)
         }
         nodeComponent.update(node.properties)
         return nodeComponent
@@ -40,31 +40,31 @@ fun <State: Any, Properties: Any> Component<State, Properties>.update(nextProper
     }
 
     // Update component
-    val previousProperties = this.properties
+    val previousProperties = properties
     if (nextProperties !== previousProperties)
-        this.componentWillReceiveProps(nextProperties)
-    if (forceUpdate || this.shouldComponentUpdate(nextProperties, state)) {
-        this.componentWillUpdate(nextProperties, state)
+        componentWillReceiveProps(nextProperties)
+    if (forceUpdate || shouldComponentUpdate(nextProperties, state)) {
+        componentWillUpdate(nextProperties, state)
 
-        val previousChildren = this.childComponents
-        this.properties = nextProperties
+        val previousChildren = childComponents
+        properties = nextProperties
         var keyCounter = 0
-        this.childComponents = this.asNodes().map { node ->
+        childComponents = asNodes().map { node ->
             val key = node.key ?: keyCounter++
-            val prevChildComponent = this.childComponents[key]
-            key to nodeComponent(node as Node<Any, Any>, prevChildComponent, this)
+            val prevChildComponent = childComponents[key]
+            key to nodeComponent(node, prevChildComponent)
         }.toMap()
 
         // Unmount discarded toNodes
-        previousChildren.values.minus(this.childComponents.values).forEach { childComponent ->
+        previousChildren.values.minus(childComponents.values).forEach { childComponent ->
             childComponent.unmount()
         }
-        this.componentDidUpdate(previousProperties, previousState)
-        this.previousState = state
+        componentDidUpdate(previousProperties, previousState)
+        previousState = state
     } else {
-        this.properties = nextProperties
-        this.previousState = state
-        this.childComponents.values.forEach { childComponent ->
+        properties = nextProperties
+        previousState = state
+        childComponents.values.forEach { childComponent ->
             updateChild(childComponent)
         }
     }

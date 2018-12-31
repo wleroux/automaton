@@ -36,13 +36,14 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE)
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE)
 
-        val mode = glfwGetVideoMode(glfwGetPrimaryMonitor())!!
+        val primaryMonitor = glfwGetPrimaryMonitor()
+        val mode = glfwGetVideoMode(primaryMonitor)!!
         x = 0
         y = 0
-        width = (mode.width() * 2) / 3
-        height = (mode.height() * 2) / 3
+        width = mode.width()
+        height = mode.height()
 
-        window = glfwCreateWindow(width, height, "Automaton", MemoryUtil.NULL, MemoryUtil.NULL)
+        window = glfwCreateWindow(width, height, "Automaton", primaryMonitor, MemoryUtil.NULL)
         require(window != MemoryUtil.NULL) { "Failed to create the GLFW window" }
         glfwSetWindowPos(window, (mode.width() - width) / 2, (mode.height() - height) / 2)
 
@@ -82,7 +83,13 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
 
     override fun asNodes() = properties
 
+    override fun shouldComponentUpdate(nextProperties: List<Node<*, *>>, nextState: Unit): Boolean {
+        glfwMakeContextCurrent(window)
+        return super.shouldComponentUpdate(nextProperties, nextState)
+    }
+
     override fun render() {
+        glfwMakeContextCurrent(window)
         if (glfwWindowShouldClose(window)) {
             isActive = false
             return
@@ -102,6 +109,7 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
 
         glfwSwapBuffers(window)
         glfwPollEvents()
+        glfwMakeContextCurrent(0L)
     }
 
     @Suppress("UNUSED_PARAMETER")

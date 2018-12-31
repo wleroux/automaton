@@ -1,7 +1,6 @@
 package com.github.wleroux.automaton.component.launcher.game.menu
 
 import com.github.wleroux.automaton.component.button.ButtonBuilder.Companion.button
-import com.github.wleroux.automaton.component.card.CardBuilder.Companion.card
 import com.github.wleroux.automaton.component.modal.ModalBuilder.Companion.modal
 import com.github.wleroux.automaton.component.surface.SurfaceBuilder.Companion.surface
 import com.github.wleroux.automaton.component.text.TextBuilder.Companion.text

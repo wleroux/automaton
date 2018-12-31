@@ -56,6 +56,6 @@ abstract class Component<State: Any, Properties: Any>(initialState: State) {
     }
 
     override fun toString(): String {
-        return "${this.javaClass.simpleName}[$properties]"
+        return "${this.javaClass.simpleName}[$properties]($childComponents)"
     }
 }

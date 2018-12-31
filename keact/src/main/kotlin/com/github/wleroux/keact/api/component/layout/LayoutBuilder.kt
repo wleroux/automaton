@@ -22,5 +22,5 @@ class LayoutBuilder(private val key: Any?) {
     var alignItems: ItemAlign = ItemAlign.STRETCH
     var wrap: Wrap = Wrap.NO_WRAP
 
-    fun build() = Node(LayoutComponent::class, LayoutComponent.LayoutProperties(direction, justifyContent, alignItems, alignContent, wrap, nodes), key)
+    fun build() = Node(key, LayoutComponent::class, LayoutComponent.LayoutProperties(direction, justifyContent, alignItems, alignContent, wrap, nodes))
 }

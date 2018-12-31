@@ -1,5 +1,6 @@
 package com.github.wleroux.automaton.component.launcher.game.viewport
 
+import com.github.wleroux.automaton.game.Game
 import com.github.wleroux.keact.api.Node
 import com.github.wleroux.keact.api.component.NodeBuilderDslMarker
 
@@ -9,5 +10,8 @@ class GameViewportBuilder(val key: Any? = null) {
         fun gameViewport(key: Any? = null, block: GameViewportBuilder.() -> Unit = {})
                 = GameViewportBuilder(key).apply(block).build()
     }
-    fun build() = Node(GameViewportComponent::class, Unit, key)
+
+    lateinit var game: Game
+
+    fun build() = Node(key, GameViewportComponent::class, game)
 }

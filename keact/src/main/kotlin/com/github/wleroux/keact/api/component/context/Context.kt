@@ -1,5 +1,7 @@
 package com.github.wleroux.keact.api.component.context
 
+import com.github.wleroux.keact.api.component.nodecollection.NodeCollectionBuilder
+
 class Context<ContextProperties: Any> {
     lateinit var value: ContextProperties
         private set
@@ -20,9 +22,9 @@ class Context<ContextProperties: Any> {
     }
 
     fun provider(key: Any? = null, block: ContextProviderBuilder<ContextProperties>.() -> Unit) =
-            ContextProviderBuilder(this, key).apply(block).build()
-    fun consumer(key: Any? = null, block: ContextConsumerNodeCollector.(ContextProperties) -> Unit) =
-            ContextConsumerBuilder(this, key).apply {
+            ContextProviderBuilder(key, this).apply(block).build()
+    fun consumer(key: Any? = null, block: NodeCollectionBuilder.(ContextProperties) -> Unit) =
+            ContextConsumerBuilder(key, this).apply {
                 this.block = block
             }.build()
 }

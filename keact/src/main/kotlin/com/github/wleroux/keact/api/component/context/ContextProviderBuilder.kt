@@ -5,7 +5,7 @@ import com.github.wleroux.keact.api.component.NodeBuilderDslMarker
 import kotlin.reflect.KClass
 
 @NodeBuilderDslMarker
-class ContextProviderBuilder<ContextProperties: Any>(private val context: Context<ContextProperties>, private val key: Any? = null) {
+class ContextProviderBuilder<ContextProperties: Any>(private val key: Any? = null, private val context: Context<ContextProperties>) {
     lateinit var value: ContextProperties
     private val nodes = mutableListOf<Node<*, *>>()
     operator fun Node<*, *>.unaryPlus() {
@@ -13,6 +13,6 @@ class ContextProviderBuilder<ContextProperties: Any>(private val context: Contex
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun build(key: Any? = null) =
-            Node(ContextProvider::class as KClass<ContextProvider<ContextProperties>>, ContextProvider.ProviderProperties(context, value, nodes), key)
+    fun build() =
+            Node(key, ContextProvider::class as KClass<ContextProvider<ContextProperties>>, ContextProvider.ProviderProperties(context, value, nodes))
 }

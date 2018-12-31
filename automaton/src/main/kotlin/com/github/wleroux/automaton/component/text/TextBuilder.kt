@@ -13,8 +13,8 @@ class TextBuilder(val key: Any? = null) {
     lateinit var text: String
     lateinit var theme: TextTheme
 
-    fun build() = Node(TextComponent::class, TextComponent.TextProperties(
+    fun build() = Node(key, TextComponent::class, TextComponent.TextProperties(
             text,
             theme
-    ), key)
+    ))
 }

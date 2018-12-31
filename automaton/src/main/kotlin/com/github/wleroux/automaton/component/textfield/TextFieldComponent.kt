@@ -16,7 +16,7 @@ import kotlin.math.min
 
 class TextFieldComponent: Component<TextFieldComponent.TextFieldState, TextFieldComponent.TextFieldProperties>(TextFieldState()) {
     data class TextFieldProperties(
-            val theme: TextFieldTheme = TextFieldTheme(),
+            val theme: TextFieldTheme,
             val initialText: String = "",
             val placeholderText: String = "",
             val textChangeHandler: (String) -> Boolean = { true },

@@ -9,5 +9,5 @@ class LauncherBuilder(private val key: Any? = null) {
     }
 
     fun build() =
-            Node(LauncherComponent::class, Unit, key)
+            Node(key, LauncherComponent::class, Unit)
 }

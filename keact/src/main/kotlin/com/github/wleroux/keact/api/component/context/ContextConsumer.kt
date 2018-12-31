@@ -2,11 +2,12 @@ package com.github.wleroux.keact.api.component.context
 
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.Node
+import com.github.wleroux.keact.api.component.nodecollection.NodeCollector
 
 class ContextConsumer<ContextProperties: Any>: Component<Unit, ContextConsumer.ContextConsumerProperties<ContextProperties>>(Unit) {
     data class ContextConsumerProperties<ContextProperties: Any>(
         val context: Context<ContextProperties>,
-        val nodes:  ContextConsumerNodeCollector.(ContextProperties) -> Unit
+        val nodes:  NodeCollector.(ContextProperties) -> Unit
     )
 
     private var updatePending = false
@@ -30,8 +31,8 @@ class ContextConsumer<ContextProperties: Any>: Component<Unit, ContextConsumer.C
     }
 
     override fun asNodes(): List<Node<*, *>> {
-        val collector = ContextConsumerNodeCollector()
-        properties.nodes.invoke(collector, properties.context.value)
-        return collector.build()
+        return NodeCollector().apply {
+            properties.nodes.invoke(this, properties.context.value)
+        }.build()
     }
 }

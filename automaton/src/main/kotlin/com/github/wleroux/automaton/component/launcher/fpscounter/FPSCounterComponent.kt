@@ -44,5 +44,5 @@ class FPSCounterComponent: Component<FPSCounterComponent.FpsCounterState, Unit>(
         super.render()
     }
 
-    override fun findComponentAt(x: Int, y: Int) = null
+    override fun findComponentAt(x: Int, y: Int): Component<*, *>? = null
 }
