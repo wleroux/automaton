@@ -1,39 +1,48 @@
 package com.github.wleroux.automaton.system.worldgenerator
 
 import com.github.wleroux.automaton.component.launcher.game.event.GameTickedEvent
-import com.github.wleroux.automaton.game.EntityId
-import com.github.wleroux.automaton.game.Game
-import com.github.wleroux.automaton.game.data.PositionData
-import com.github.wleroux.automaton.game.data.RenderableData
+import com.github.wleroux.automaton.data.PositionType
+import com.github.wleroux.automaton.data.RenderableType
 import com.github.wleroux.automaton.loadMesh
 import com.github.wleroux.automaton.loadTexture
 import com.github.wleroux.automaton.math.Vector2f
+import com.github.wleroux.automaton.program.Material
+import com.github.wleroux.automaton.program.Model
+import com.github.wleroux.ecs.api.DefaultEntityData
+import com.github.wleroux.ecs.api.EntityId
+import com.github.wleroux.ecs.api.Game
 import kotlin.random.Random
 
 class WorldGeneratorSystem(val game: Game) {
     @Suppress("UNUSED_PARAMETER")
     fun generate(cmd: GenerateWorld) {
-        val cube = RenderableData(
-                loadMesh("automaton/asset/cube.obj"),
-                loadTexture("automaton/asset/Color.png")
-        )
+        game[PositionType] = DefaultEntityData()
+        game[RenderableType] = DefaultEntityData()
 
+        val mesh =loadMesh("automaton/asset/cube.obj")
+        val texture = loadTexture("automaton/asset/Color.png")
+
+        val cubePrototype = { game: Game ->
+            val entityId = EntityId()
+            game[RenderableType][entityId] = Model(mesh, Material(texture))
+            entityId
+        }
 
         (-2..2).forEach {x ->
             (-2..2).forEach { y ->
-                val entityId = EntityId()
-                game[PositionData::class][entityId] = PositionData(Vector2f(x.toFloat(), y.toFloat()))
-                game[RenderableData::class][entityId] = cube
+                cubePrototype(game).also { entityId ->
+                    game[PositionType][entityId] = Vector2f(x.toFloat(), y.toFloat())
+                }
             }
         }
     }
 
     @Suppress("UNUSED_PARAMETER")
     fun update(event: GameTickedEvent) {
-        game[PositionData::class].forEach { _, positionData ->
+        game[PositionType].forEach { (_, position) ->
             if (Random.nextInt(100) >= 99) {
-                positionData.position.x += Random.nextInt(-1, 2)
-                positionData.position.y += Random.nextInt(-1, 2)
+                position.x += Random.nextInt(-1, 2)
+                position.y += Random.nextInt(-1, 2)
             }
         }
     }

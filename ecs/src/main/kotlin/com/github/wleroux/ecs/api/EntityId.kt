@@ -1,4 +1,4 @@
-package com.github.wleroux.automaton.game
+package com.github.wleroux.ecs.api
 
 import java.util.*
 

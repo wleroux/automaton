@@ -1,4 +1,4 @@
-package com.github.wleroux.automaton.game
+package com.github.wleroux.ecs.api
 
 import com.github.wleroux.bus.api.Bus
 import com.github.wleroux.bus.api.BusSubscription
@@ -7,7 +7,6 @@ import com.github.wleroux.bus.api.message.MessageHandler
 import com.github.wleroux.bus.api.message.command.Command
 import com.github.wleroux.bus.api.message.event.Event
 import com.github.wleroux.bus.api.message.query.Query
-import kotlin.reflect.KClass
 
 class Game: Bus {
     private val bus: Bus = DefaultBusBuilder.bus()
@@ -17,11 +16,13 @@ class Game: Bus {
     override fun <QueryResponse> gather(query: Query<QueryResponse>): List<QueryResponse> = bus.gather(query)
     override fun publish(event: Event) = bus.publish(event)
 
-    private val data: MutableMap<KClass<*>, MutableMap<EntityId, *>> = mutableMapOf()
+    private val state: MutableMap<DataType<*>, Any> = mutableMapOf()
     @Suppress("UNCHECKED_CAST")
-    operator fun <T: Any> get(dataType: KClass<T>): MutableMap<EntityId, T> {
-        return this.data.computeIfAbsent(dataType) {
-            mutableMapOf<EntityId, T>()
-        } as MutableMap<EntityId, T>
+    operator fun <T: Any> get(dataType: DataType<T>): T {
+        return this.state[dataType] as T
+    }
+    operator fun <T: Any> set(dataType: DataType<T>, value: T?) {
+        if (value == null) state.remove(dataType)
+        else state[dataType] = value
     }
 }

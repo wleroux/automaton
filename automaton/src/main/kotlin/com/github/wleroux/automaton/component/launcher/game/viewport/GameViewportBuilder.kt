@@ -1,6 +1,6 @@
 package com.github.wleroux.automaton.component.launcher.game.viewport
 
-import com.github.wleroux.automaton.game.Game
+import com.github.wleroux.ecs.api.Game
 import com.github.wleroux.keact.api.Node
 import com.github.wleroux.keact.api.component.NodeBuilderDslMarker
 

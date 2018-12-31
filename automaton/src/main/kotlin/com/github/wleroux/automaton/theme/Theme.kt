@@ -178,7 +178,7 @@ val DEFAULT_THEME by lazy {
                 primaryCardTheme = CardTheme(
                         color = Color.WHITE,
                         border = Border(
-                                radius = Border.BorderRadius(1, 1, 1, 1)
+                                radius = Border.BorderRadius(4, 4, 4, 4)
                         ),
                         padding = Padding( 8, 8, 8, 8),
                         margin = Padding(4, 4, 4, 4)

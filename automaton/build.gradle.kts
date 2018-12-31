@@ -12,6 +12,7 @@ val lwjglNatives = "natives-windows"
 
 dependencies {
     implementation(project(":keact"))
+    implementation(project(":ecs"))
     implementation(project(":bus"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 

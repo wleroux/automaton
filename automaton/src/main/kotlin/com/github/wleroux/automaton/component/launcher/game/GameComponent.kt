@@ -1,13 +1,13 @@
 package com.github.wleroux.automaton.component.launcher.game
 
-import com.github.wleroux.automaton.game.GameContext
+import com.github.wleroux.automaton.data.GameContext
 import com.github.wleroux.automaton.component.launcher.game.event.GameTickedEvent
 import com.github.wleroux.automaton.component.launcher.game.menu.GameMenuBuilder.Companion.gameMenu
 import com.github.wleroux.automaton.component.launcher.game.viewport.GameViewportBuilder.Companion.gameViewport
 import com.github.wleroux.automaton.component.window.event.*
-import com.github.wleroux.automaton.game.Game
-import com.github.wleroux.automaton.game.Plugin
 import com.github.wleroux.automaton.system.worldgenerator.GenerateWorld
+import com.github.wleroux.ecs.api.Game
+import com.github.wleroux.automaton.Plugin
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.dispatch
 import com.github.wleroux.keact.api.event.Event
@@ -22,8 +22,8 @@ class GameComponent: Component<GameComponent.GameState, GameComponent.GameProper
             val quitToMainMenu: () -> Unit
     )
 
-    lateinit var game: Game
-    lateinit var plugins: List<Plugin>
+    private lateinit var game: Game
+    private lateinit var plugins: List<Plugin>
     override fun componentDidMount() {
         this.dispatch(RequestFocus)
         game = Game()

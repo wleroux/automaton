@@ -74,11 +74,13 @@ object FontMeshCreator {
         return cursorX
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun getHeight(text: String, font: Font, size: Int): Float {
         val sizeFactor = size.toFloat() / font.info.size.toFloat()
         return font.common.lineHeight.toFloat() * sizeFactor
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun getCursorPosition(x: Int, y: Int, text: String, font: Font, size: Int): Int {
         val sizeFactor = size.toFloat() / font.info.size.toFloat()
         var cursorX = 0f
