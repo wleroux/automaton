@@ -1,6 +1,5 @@
 package com.github.wleroux.automaton.component.launcher.game
 
-import com.github.wleroux.automaton.data.GameContext
 import com.github.wleroux.automaton.component.launcher.game.event.GameTickedEvent
 import com.github.wleroux.automaton.component.launcher.game.menu.GameMenuBuilder.Companion.gameMenu
 import com.github.wleroux.automaton.component.launcher.game.viewport.GameViewportBuilder.Companion.gameViewport

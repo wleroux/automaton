@@ -1,7 +1,7 @@
 package com.github.wleroux.automaton.component.launcher.fpscounter
 
 import com.github.wleroux.automaton.component.text.TextBuilder.Companion.text
-import com.github.wleroux.automaton.theme.ThemeContext
+import com.github.wleroux.automaton.component.launcher.ThemeContext
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.component.layout.ContentAlign
 import com.github.wleroux.keact.api.component.layout.JustifyContent

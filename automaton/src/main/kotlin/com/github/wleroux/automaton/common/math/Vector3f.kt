@@ -1,4 +1,4 @@
-package com.github.wleroux.automaton.math
+package com.github.wleroux.automaton.common.math
 
 import java.lang.Math.sqrt
 import java.nio.FloatBuffer

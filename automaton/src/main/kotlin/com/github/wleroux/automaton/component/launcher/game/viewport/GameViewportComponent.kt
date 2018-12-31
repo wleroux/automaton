@@ -1,16 +1,16 @@
 package com.github.wleroux.automaton.component.launcher.game.viewport
 
-import com.github.wleroux.automaton.data.PositionType
-import com.github.wleroux.automaton.data.RenderableType
+import com.github.wleroux.automaton.data.POSITION
+import com.github.wleroux.automaton.data.RENDERABLE
 import com.github.wleroux.automaton.loadMesh
 import com.github.wleroux.automaton.loadText
 import com.github.wleroux.automaton.loadTexture
-import com.github.wleroux.automaton.math.Matrix4f
-import com.github.wleroux.automaton.math.Quaternion
-import com.github.wleroux.automaton.math.Vector3f
-import com.github.wleroux.automaton.program.Material
-import com.github.wleroux.automaton.program.Model
-import com.github.wleroux.automaton.program.Program
+import com.github.wleroux.automaton.common.math.Matrix4f
+import com.github.wleroux.automaton.common.math.Quaternion
+import com.github.wleroux.automaton.common.math.Vector3f
+import com.github.wleroux.automaton.common.program.Material
+import com.github.wleroux.automaton.common.program.Model
+import com.github.wleroux.automaton.common.program.Program
 import com.github.wleroux.ecs.api.Game
 import com.github.wleroux.keact.api.Component
 import org.lwjgl.opengl.GL11
@@ -20,9 +20,9 @@ class GameViewportComponent: Component<Unit, Game>(Unit) {
     private lateinit var model: Model
     override fun componentWillMount() {
         program = Program.build {
-            vertexShader(loadText("automaton/shader/standard.vs.glsl"))
+            vertexShader(loadText("com/github/wleroux/automaton/common/program/shader/standard.vs.glsl"))
             uniform("model", "view", "projection")
-            fragmentShader(loadText("automaton/shader/standard.fs.glsl"))
+            fragmentShader(loadText("com/github/wleroux/automaton/common/program/shader/standard.fs.glsl"))
             uniform("baseColorTexture")
         }
 
@@ -48,8 +48,8 @@ class GameViewportComponent: Component<Unit, Game>(Unit) {
             val projection = Matrix4f.perspective(Math.PI.toFloat() / 8f, width, height, 0.03f, 1000f)
             setUniform("projection", projection)
             setUniform("view", view)
-            val positions = properties[PositionType]
-            properties[RenderableType].forEach { (entityId, model) ->
+            val positions = properties[POSITION]
+            properties[RENDERABLE].forEach { (entityId, model) ->
                 positions[entityId]?.let { position ->
                     setUniform("model", Matrix4f(Vector3f(position.x, 0f, position.y)))
                     setUniform("baseColorTexture", model.material.baseColorTexture)

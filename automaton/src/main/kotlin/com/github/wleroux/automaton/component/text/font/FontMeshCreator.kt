@@ -1,6 +1,6 @@
 package com.github.wleroux.automaton.component.text.font
 
-import com.github.wleroux.automaton.program.Mesh
+import com.github.wleroux.automaton.common.program.Mesh
 import org.lwjgl.opengl.GL11.GL_FLOAT
 
 object FontMeshCreator {

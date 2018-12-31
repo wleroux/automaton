@@ -1,4 +1,4 @@
-package com.github.wleroux.automaton.math
+package com.github.wleroux.automaton.common.math
 
 import kotlin.math.acos
 

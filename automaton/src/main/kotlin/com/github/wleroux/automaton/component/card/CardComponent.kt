@@ -1,9 +1,9 @@
 package com.github.wleroux.automaton.component.card
 
 import com.github.wleroux.automaton.loadText
-import com.github.wleroux.automaton.math.Matrix4f.Companion.orthogonal
-import com.github.wleroux.automaton.program.Mesh
-import com.github.wleroux.automaton.program.Program
+import com.github.wleroux.automaton.common.math.Matrix4f.Companion.orthogonal
+import com.github.wleroux.automaton.common.program.Mesh
+import com.github.wleroux.automaton.common.program.Program
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.Node
 import org.lwjgl.opengl.GL11.GL_FLOAT
@@ -21,10 +21,10 @@ class CardComponent : Component<Unit, CardComponent.CardProperties>(Unit) {
   private lateinit var mesh: Mesh
   override fun componentDidMount() {
     program = Program.build {
-      vertexShader(loadText("com/github/wleroux/automaton/program/card/card.vs.glsl"))
+      vertexShader(loadText("com/github/wleroux/automaton/common/program/card/card.vs.glsl"))
       uniform("projection")
 
-      fragmentShader(loadText("com/github/wleroux/automaton/program/card/card.fs.glsl"))
+      fragmentShader(loadText("com/github/wleroux/automaton/common/program/card/card.fs.glsl"))
       uniform("Width", "Height")
       uniform("Color")
       uniform("Margin.top", "Margin.right", "Margin.bottom", "Margin.left")

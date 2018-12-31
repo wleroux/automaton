@@ -17,29 +17,32 @@ class LauncherComponent: Component<LauncherComponent.LaunchState, Unit>(LaunchSt
             val gameCreated: Boolean = false
     )
 
-    override fun asNodes(): List<Node<*, *>> = listOf(overlay {
-        if (state.gameCreated) {
-            +game {
-                quitToMainMenuHandler = {
-                    state = state.copy(gameCreated = false)
-                }
-            }
-        } else {
-            +layout {
-                justifyContent = JustifyContent.CENTER
-                alignContent = ContentAlign.CENTER
-                +mainMenu {
-                    newGameHandler = {
-                        state = state.copy(
-                                gameCreated = true
-                        )
-                    }
-                    quitHandler = {
-                        dispatch(QuitToDesktop)
+    override fun asNodes(): List<Node<*, *>> = listOf(ThemeContext.provider {
+        value = DEFAULT_THEME
+        +overlay {
+            if (state.gameCreated) {
+                +game {
+                    quitToMainMenuHandler = {
+                        state = state.copy(gameCreated = false)
                     }
                 }
+            } else {
+                +layout {
+                    justifyContent = JustifyContent.CENTER
+                    alignContent = ContentAlign.CENTER
+                    +mainMenu {
+                        newGameHandler = {
+                            state = state.copy(
+                                    gameCreated = true
+                            )
+                        }
+                        quitHandler = {
+                            dispatch(QuitToDesktop)
+                        }
+                    }
+                }
             }
+            +fpsCounter("fpsCounter")
         }
-        +fpsCounter("fpsCounter")
     })
 }

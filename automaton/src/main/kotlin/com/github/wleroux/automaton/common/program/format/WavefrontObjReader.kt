@@ -1,9 +1,9 @@
-package com.github.wleroux.automaton.program.format
+package com.github.wleroux.automaton.common.program.format
 
-import com.github.wleroux.automaton.math.Vector2f
-import com.github.wleroux.automaton.math.Vector3f
-import com.github.wleroux.automaton.program.Mesh
-import com.github.wleroux.automaton.program.Vertex
+import com.github.wleroux.automaton.common.math.Vector2f
+import com.github.wleroux.automaton.common.math.Vector3f
+import com.github.wleroux.automaton.common.program.Mesh
+import com.github.wleroux.automaton.common.program.Vertex
 import org.lwjgl.opengl.GL11.GL_FLOAT
 
 object WavefrontObjReader {

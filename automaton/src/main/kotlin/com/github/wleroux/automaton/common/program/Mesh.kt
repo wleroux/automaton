@@ -1,6 +1,6 @@
-package com.github.wleroux.automaton.program
+package com.github.wleroux.automaton.common.program
 
-import com.github.wleroux.automaton.platform.BYTES
+import com.github.wleroux.automaton.common.platform.BYTES
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL20.*
 import org.lwjgl.opengl.GL30

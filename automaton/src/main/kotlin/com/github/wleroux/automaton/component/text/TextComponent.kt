@@ -3,11 +3,11 @@ package com.github.wleroux.automaton.component.text
 import com.github.wleroux.automaton.component.text.font.FontMeshCreator
 import com.github.wleroux.automaton.loadText
 import com.github.wleroux.automaton.loadTexture
-import com.github.wleroux.automaton.math.Matrix4f
-import com.github.wleroux.automaton.math.Vector2f
-import com.github.wleroux.automaton.program.Mesh
-import com.github.wleroux.automaton.program.Program
-import com.github.wleroux.automaton.program.Texture
+import com.github.wleroux.automaton.common.math.Matrix4f
+import com.github.wleroux.automaton.common.math.Vector2f
+import com.github.wleroux.automaton.common.program.Mesh
+import com.github.wleroux.automaton.common.program.Program
+import com.github.wleroux.automaton.common.program.Texture
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.theme.Color
 import org.lwjgl.opengl.GL11.*
@@ -21,10 +21,10 @@ class TextComponent: Component<Unit, TextComponent.TextProperties>(Unit) {
     lateinit var program: Program
     override fun componentWillMount() {
         program = Program.build {
-            vertexShader(loadText("com/github/wleroux/automaton/program/sdf/sdf.vs.glsl"))
+            vertexShader(loadText("com/github/wleroux/automaton/common/program/sdf/sdf.vs.glsl"))
             uniform("projection")
 
-            fragmentShader(loadText("com/github/wleroux/automaton/program/sdf/sdf.fs.glsl"))
+            fragmentShader(loadText("com/github/wleroux/automaton/common/program/sdf/sdf.fs.glsl"))
             uniform("BaseColor")
             uniform("Color", "Width", "Edge")
             uniform("BorderColor", "BorderWidth", "BorderEdge", "BorderOffset")

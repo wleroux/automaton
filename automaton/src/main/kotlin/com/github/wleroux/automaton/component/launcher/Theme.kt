@@ -1,4 +1,4 @@
-package com.github.wleroux.automaton.theme
+package com.github.wleroux.automaton.component.launcher
 
 import com.github.wleroux.automaton.component.button.ButtonStyle
 import com.github.wleroux.automaton.component.button.ButtonTheme
@@ -180,7 +180,7 @@ val DEFAULT_THEME by lazy {
                         border = Border(
                                 radius = Border.BorderRadius(4, 4, 4, 4)
                         ),
-                        padding = Padding( 8, 8, 8, 8),
+                        padding = Padding(8, 8, 8, 8),
                         margin = Padding(4, 4, 4, 4)
                 ),
                 primaryCardTextTheme = defaultTextTheme.copy(

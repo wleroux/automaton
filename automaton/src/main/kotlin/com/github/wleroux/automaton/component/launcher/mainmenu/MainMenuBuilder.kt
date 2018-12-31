@@ -3,7 +3,7 @@
 import com.github.wleroux.automaton.component.button.ButtonBuilder.Companion.button
 import com.github.wleroux.automaton.component.card.CardBuilder.Companion.card
 import com.github.wleroux.automaton.component.text.TextBuilder.Companion.text
-import com.github.wleroux.automaton.theme.ThemeContext
+import com.github.wleroux.automaton.component.launcher.ThemeContext
 import com.github.wleroux.keact.api.component.NodeBuilderDslMarker
 import com.github.wleroux.keact.api.component.layout.LayoutBuilder.Companion.layout
 

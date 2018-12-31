@@ -1,7 +1,7 @@
-package com.github.wleroux.automaton.program
+package com.github.wleroux.automaton.common.program
 
-import com.github.wleroux.automaton.math.Vector2f
-import com.github.wleroux.automaton.math.Vector3f
+import com.github.wleroux.automaton.common.math.Vector2f
+import com.github.wleroux.automaton.common.math.Vector3f
 import java.nio.FloatBuffer
 
 data class Vertex(

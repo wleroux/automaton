@@ -2,9 +2,9 @@ package com.github.wleroux.automaton
 
 import com.github.wleroux.automaton.component.text.font.BitmapFontReader
 import com.github.wleroux.automaton.component.text.font.Font
-import com.github.wleroux.automaton.program.Mesh
-import com.github.wleroux.automaton.program.Texture
-import com.github.wleroux.automaton.program.format.WavefrontObjReader
+import com.github.wleroux.automaton.common.program.Mesh
+import com.github.wleroux.automaton.common.program.Texture
+import com.github.wleroux.automaton.common.program.format.WavefrontObjReader
 import org.lwjgl.BufferUtils
 import org.lwjgl.glfw.GLFW.glfwGetCurrentContext
 import org.lwjgl.stb.STBImage.*

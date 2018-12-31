@@ -4,7 +4,7 @@ import com.github.wleroux.automaton.component.button.ButtonBuilder.Companion.but
 import com.github.wleroux.automaton.component.modal.ModalBuilder.Companion.modal
 import com.github.wleroux.automaton.component.surface.SurfaceBuilder.Companion.surface
 import com.github.wleroux.automaton.component.text.TextBuilder.Companion.text
-import com.github.wleroux.automaton.theme.ThemeContext
+import com.github.wleroux.automaton.component.launcher.ThemeContext
 import com.github.wleroux.keact.api.component.layout.LayoutBuilder.Companion.layout
 
 class GameMenuBuilder(private val key: Any? = null) {
