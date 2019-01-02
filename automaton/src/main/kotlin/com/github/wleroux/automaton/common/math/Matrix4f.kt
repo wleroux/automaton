@@ -17,25 +17,23 @@ data class Matrix4f(
       0f, 0f, 1f, 0f,
       0f, 0f, 0f, 1f
     )
-    operator fun invoke(position: Vector3f = Vector3f(0f, 0f, 0f), rotation: Quaternion = Quaternion(1f, 0f, 0f, 0f)): Matrix4f {
+    operator fun invoke(position: Vector3f = Vector3f(0f, 0f, 0f), rotation: Quaternion = Quaternion(1f, 0f, 0f, 0f), scale: Vector3f = Vector3f(1f, 1f, 1f)): Matrix4f {
+      val wx = rotation.w * rotation.x
+      val wy = rotation.w * rotation.y
+      val wz = rotation.w * rotation.z
       val xx = rotation.x * rotation.x
       val xy = rotation.x * rotation.y
       val xz = rotation.x * rotation.z
-      val xw = rotation.x * rotation.w
-
       val yy = rotation.y * rotation.y
       val yz = rotation.y * rotation.z
-      val yw = rotation.y * rotation.w
-
       val zz = rotation.z * rotation.z
-      val zw = rotation.z * rotation.w
 
       //@formatter:off
       return Matrix4f(
-              1 - 2 * (yy + zz), 2 * (xy - zw), 2 * (xz + yw), position.x,
-              2 * (xy + zw), 1 - 2 * (xx + zz), 2 * (yz - xw), position.y,
-              2 * (xz - yw), 2 * (yz + xw), 1 - 2 * (xx + yy), position.z,
-              0f, 0f, 0f, 1f
+              (1f - 2f * (yy + zz)) * scale.x,        2f * (xy - wz) * scale.y,        2f * (xz + wy) * scale.z, position.x,
+                     2f * (xy + wz) * scale.x, (1f - 2f * (xx + zz)) * scale.y,        2f * (yz - wx) * scale.z, position.y,
+                     2f * (xz - wy) * scale.x,        2f * (yz + wx) * scale.y, (1f - 2f * (xx + yy)) * scale.z, position.z,
+                                           0f,                              0f,                              0f,         1f
       )
       //@formatter:on
     }

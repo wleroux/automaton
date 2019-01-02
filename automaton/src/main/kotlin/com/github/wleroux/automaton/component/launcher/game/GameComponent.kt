@@ -7,11 +7,15 @@ import com.github.wleroux.automaton.component.window.event.*
 import com.github.wleroux.automaton.system.worldgenerator.GenerateWorld
 import com.github.wleroux.ecs.api.Game
 import com.github.wleroux.automaton.Plugin
+import com.github.wleroux.automaton.data.ConiferousTreeTile
+import com.github.wleroux.automaton.data.DeciduousTreeTile
+import com.github.wleroux.automaton.system.worldgenerator.TileSettings
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.dispatch
 import com.github.wleroux.keact.api.event.Event
 import com.github.wleroux.keact.api.event.Phase
 import java.util.*
+import kotlin.random.Random
 
 class GameComponent: Component<GameComponent.GameState, GameComponent.GameProperties>(GameState()) {
     data class GameState(
@@ -29,7 +33,20 @@ class GameComponent: Component<GameComponent.GameState, GameComponent.GameProper
         plugins = ServiceLoader.load(Plugin::class.java).toList()
         plugins.forEach { it.initialize(game) }
 
-        game.invoke(GenerateWorld)
+        game.invoke(GenerateWorld(
+                Random.nextLong(),
+                50, 50,
+                mapOf(
+                        DeciduousTreeTile to TileSettings(
+                                0.1f,
+                                0.1f
+                        ),
+                        ConiferousTreeTile to TileSettings(
+                                0.3f,
+                                0.1f
+                        )
+                )
+        ))
     }
 
     override fun componentWillUnmount() {
