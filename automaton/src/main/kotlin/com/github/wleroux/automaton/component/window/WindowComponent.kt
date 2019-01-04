@@ -187,7 +187,7 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
     @Suppress("UNUSED_PARAMETER")
     private fun keyCallback(window: Long, key: Int, scancode: Int, action: Int, mods: Int) {
         val keyStroke = KeyStroke(
-                scancode.toChar(),
+                key.toChar(),
                 when (action) {
                     GLFW_PRESS -> KeyAction.PRESSED
                     GLFW_RELEASE -> KeyAction.RELEASED

@@ -10,13 +10,22 @@ import com.github.wleroux.automaton.common.math.perlin_noise
 import com.github.wleroux.automaton.common.program.Material
 import com.github.wleroux.automaton.common.program.Model
 import com.github.wleroux.automaton.common.program.Program
-import com.github.wleroux.automaton.data.TRANSFORM
+import com.github.wleroux.automaton.component.launcher.game.event.GameTickedEvent
+import com.github.wleroux.automaton.component.window.event.*
 import com.github.wleroux.automaton.data.ConiferousTreeTile
 import com.github.wleroux.automaton.data.DeciduousTreeTile
 import com.github.wleroux.automaton.data.TILES
+import com.github.wleroux.bus.api.BusSubscription
+import com.github.wleroux.bus.api.message.MessageHandlerBuilder.Companion.messageHandler
+import com.github.wleroux.bus.api.message.command.DefaultCommandHandlerBuilder.Companion.commandHandler
+import com.github.wleroux.bus.api.message.event.DefaultEventHandlerBuilder.Companion.eventHandler
 import com.github.wleroux.ecs.api.Game
 import com.github.wleroux.keact.api.Component
+import com.github.wleroux.keact.api.dispatch
+import com.github.wleroux.keact.api.event.Event
 import org.lwjgl.opengl.GL11.*
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeUnit.*
 import kotlin.math.PI
 import kotlin.math.sqrt
 
@@ -25,7 +34,8 @@ class GameViewportComponent: Component<Unit, Game>(Unit) {
     private lateinit var coniferousTreeModel: Model
     private lateinit var deciduousTreeModel: Model
     private lateinit var rockModel: Model
-    override fun componentWillMount() {
+    private lateinit var subscription: BusSubscription
+    override fun componentDidMount() {
         program = Program.build {
             vertexShader(loadText("com/github/wleroux/automaton/common/program/standard/standard.vs.glsl"))
             uniform("model", "view", "projection")
@@ -45,11 +55,37 @@ class GameViewportComponent: Component<Unit, Game>(Unit) {
                 loadMesh("automaton/asset/rock.obj"),
                 Material(loadTexture("automaton/asset/rock_diff_1k.png"))
         )
+
+        subscription = properties.subscribe(messageHandler {
+            +eventHandler { event: GameTickedEvent ->
+                val dx = when {
+                    keyboard.isPressed(Keys.A) && keyboard.isPressed(Keys.D) -> 0f
+                    keyboard.isPressed(Keys.A) -> -1f
+                    keyboard.isPressed(Keys.D) -> 1f
+                    else -> 0f
+                }
+                val dz = when {
+                    keyboard.isPressed(Keys.S) && keyboard.isPressed(Keys.W) -> 0f
+                    keyboard.isPressed(Keys.S) -> -1f
+                    keyboard.isPressed(Keys.W) -> 1f
+                    else -> 0f
+                }
+
+                val dt = event.dt.toFloat() / MILLISECONDS.convert(1, SECONDS).toFloat()
+                val dv = Vector3f(dx, 0f, dz) * dt * 25f
+                cameraPosition += dv
+            }
+        })
+    }
+
+    override fun componentWillUnmount() {
+        subscription.close()
     }
 
     override fun preferredWidth(parentWidth: Int, parentHeight: Int) = parentWidth
     override fun preferredHeight(parentWidth: Int, parentHeight: Int) = parentHeight
 
+    private var cameraPosition = Vector3f(25f, 30f, -5f)
     override fun render() {
         program.use {
             // Set background color
@@ -60,7 +96,6 @@ class GameViewportComponent: Component<Unit, Game>(Unit) {
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
             glDisable(GL_SCISSOR_TEST)
 
-            val cameraPosition = Vector3f(25f, 30f, -5f)
             val cameraRotation = Quaternion(Vector3f.AXIS_X, Math.PI.toFloat() * (4f / 16f))
             val view = Matrix4f(position = cameraPosition, rotation = cameraRotation).invert()
             val projection = Matrix4f.perspective(Math.PI.toFloat() / 8f, width, height, 0.03f, 1000f)
@@ -130,6 +165,19 @@ class GameViewportComponent: Component<Unit, Game>(Unit) {
                     else -> {}
                 }
             }
+        }
+    }
+
+    private val keyboard = Keyboard()
+
+    override fun handle(event: Event) {
+        keyboard.handle(event)
+        if (event.data is MouseClick) {
+            val mouseClick = event.data as MouseClick
+            if (mouseClick.action == MouseAction.RELEASED) {
+                this.dispatch(RequestFocus)
+            }
+            event.stopPropagation = true
         }
     }
 }
