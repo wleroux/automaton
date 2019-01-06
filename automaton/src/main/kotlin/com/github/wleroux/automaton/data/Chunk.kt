@@ -1,6 +1,6 @@
 package com.github.wleroux.automaton.data
 
-class TileMap(val width: Int, val depth: Int, init: (Int) -> Tile? = { null }) {
+class Chunk(val width: Int, val depth: Int, init: (Int) -> Tile? = { null }) {
     private val backend: Array<Tile?> = Array(width * depth, init)
     operator fun get(x: Int, z: Int): Tile? {
         if (0 > x || x >= width) return null

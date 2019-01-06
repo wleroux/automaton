@@ -7,7 +7,7 @@ import com.github.wleroux.ecs.api.Game
 import com.github.wleroux.automaton.System
 import com.github.wleroux.automaton.common.math.perlin_noise
 import com.github.wleroux.automaton.data.type.TILES
-import com.github.wleroux.automaton.data.TileMap
+import com.github.wleroux.automaton.data.Chunk
 import kotlin.random.Random
 
 class WorldGeneratorSystem: System {
@@ -15,7 +15,7 @@ class WorldGeneratorSystem: System {
     override fun initialize(game: Game) {
         subscription = game.subscribe(messageHandler {
             +commandHandler { cmd: GenerateWorldCommand ->
-                game[TILES] = TileMap(cmd.width, cmd.height)
+                game[TILES] = Chunk(cmd.width, cmd.height)
 
                 val random = Random(cmd.seed)
                 cmd.tileSettings.forEach { tile, tileSettings ->

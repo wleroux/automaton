@@ -48,13 +48,13 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
         glfwSetWindowPos(window, (mode.width() - width) / 2, (mode.height() - height) / 2)
 
         glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE)
-        glfwSetCharModsCallback(window, this::charModsCallback)
-        glfwSetKeyCallback(window, this::keyCallback)
+        glfwSetCharModsCallback(window, this::keyboardTypedModsCallback)
+        glfwSetKeyCallback(window, this::keyboardActionCallback)
 
-        glfwSetWindowSizeCallback(window, this::windowSizeCallback)
+        glfwSetWindowSizeCallback(window, this::windowResizedCallback)
         glfwSetWindowCloseCallback(window, this::windowCloseCallback)
-        glfwSetCursorPosCallback(window, this::cursorPosCallback)
-        glfwSetMouseButtonCallback(window, this::mouseButtonCallback)
+        glfwSetCursorPosCallback(window, this::mouseMovedCallback)
+        glfwSetMouseButtonCallback(window, this::mouseActionCallback)
         glfwSetScrollCallback(window, this::mouseScrollCallback)
 
         glfwMakeContextCurrent(window)
@@ -113,15 +113,6 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
         glfwMakeContextCurrent(0L)
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    private fun windowSizeCallback(window: Long, width: Int, height: Int) {
-        this.width = width
-        this.height = height
-    }
-    private fun windowCloseCallback(window: Long) {
-        glfwSetWindowShouldClose(window, true)
-    }
-
     override fun handle(event: Event) {
         if (event.phase == Phase.CAPTURE) return
 
@@ -146,7 +137,16 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun cursorPosCallback(window: Long, xpos: Double, ypos: Double) {
+    private fun windowResizedCallback(window: Long, width: Int, height: Int) {
+        this.width = width
+        this.height = height
+    }
+    private fun windowCloseCallback(window: Long) {
+        glfwSetWindowShouldClose(window, true)
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    private fun mouseMovedCallback(window: Long, xpos: Double, ypos: Double) {
         mouseX = xpos.toInt()
         mouseY = height - ypos.toInt()
 
@@ -161,7 +161,7 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun mouseButtonCallback(window: Long, button: Int, action: Int, mods: Int) {
+    private fun mouseActionCallback(window: Long, button: Int, action: Int, mods: Int) {
         if (button == GLFW_MOUSE_BUTTON_LEFT || button == GLFW_MOUSE_BUTTON_RIGHT || button == GLFW_MOUSE_BUTTON_MIDDLE) {
             findComponentAt(mouseX, mouseY)?.dispatch(MouseClick(
                     when (action) {
@@ -190,7 +190,7 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun keyCallback(window: Long, key: Int, scancode: Int, action: Int, mods: Int) {
+    private fun keyboardActionCallback(window: Long, key: Int, scancode: Int, action: Int, mods: Int) {
         val keyStroke = KeyStroke(
                 key.toChar(),
                 when (action) {
@@ -207,7 +207,7 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
         (focus ?: this).dispatch(keyStroke)
     }
     @Suppress("UNUSED_PARAMETER")
-    private fun charModsCallback(window: Long, codepoint: Int, mods: Int) {
+    private fun keyboardTypedModsCallback(window: Long, codepoint: Int, mods: Int) {
         val keyStroke = KeyStroke(
                 codepoint.toChar(),
                 KeyAction.TYPED,

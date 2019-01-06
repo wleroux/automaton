@@ -13,6 +13,7 @@ import com.github.wleroux.automaton.data.type.TILES
 import com.github.wleroux.automaton.data.type.CAMERA
 import com.github.wleroux.automaton.data.type.KEYBOARD
 import com.github.wleroux.automaton.data.type.MOUSE
+import com.github.wleroux.automaton.system.treeplanter.ActionCommand
 import com.github.wleroux.ecs.api.Game
 import com.github.wleroux.keact.api.Component
 import com.github.wleroux.keact.api.dispatch
@@ -26,6 +27,7 @@ class GameViewportComponent: Component<Unit, Game>(Unit) {
     private lateinit var coniferousTreeModel: Model
     private lateinit var deciduousTreeModel: Model
     private lateinit var rockModel: Model
+    private var focused: Boolean = false
     override fun componentDidMount() {
         program = Program.build {
             vertexShader(loadText("com/github/wleroux/automaton/common/program/standard/standard.vs.glsl"))
@@ -51,6 +53,9 @@ class GameViewportComponent: Component<Unit, Game>(Unit) {
     override fun preferredWidth(parentWidth: Int, parentHeight: Int) = parentWidth
     override fun preferredHeight(parentWidth: Int, parentHeight: Int) = parentHeight
 
+
+    lateinit var view: Matrix4f
+    lateinit var projection: Matrix4f
     override fun render() {
         program.use {
             // Set background color
@@ -61,8 +66,8 @@ class GameViewportComponent: Component<Unit, Game>(Unit) {
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
             glDisable(GL_SCISSOR_TEST)
 
-            val view = Matrix4f(properties[CAMERA].toTransform()).invert()
-            val projection = Matrix4f.perspective(Math.PI.toFloat() / 8f, width, height, 0.03f, 1000f)
+            view = Matrix4f(properties[CAMERA].toTransform()).invert()
+            projection = Matrix4f.perspective(Math.PI.toFloat() / 8f, width, height, 0.03f, 1000f)
             setUniform("projection", projection)
             setUniform("view", view)
 
@@ -136,12 +141,40 @@ class GameViewportComponent: Component<Unit, Game>(Unit) {
         properties[KEYBOARD].handle(event)
         properties[MOUSE].handle(event)
 
-        if (event.data is MouseClick) {
-            val mouseClick = event.data as MouseClick
-            if (mouseClick.action == MouseAction.RELEASED) {
-                this.dispatch(RequestFocus)
+        when (event.data) {
+            is Focus -> {
+                focused = true
+                event.stopPropagation = true
             }
-            event.stopPropagation = true
+            is Unfocus -> {
+                focused = false
+                event.stopPropagation = true
+            }
+            is MouseClick -> {
+                val mouseClick = event.data as MouseClick
+                if (mouseClick.action == MouseAction.RELEASED) {
+                    if (!focused) {
+                        this.dispatch(RequestFocus)
+                    } else {
+                        val screenX = 2f * ((mouseClick.mouseX.toFloat() - x.toFloat()) / width.toFloat()) - 1f
+                        val screenY = 2f * ((mouseClick.mouseY.toFloat() - y.toFloat()) / height.toFloat()) - 1f
+
+                        val screenPosFar = Vector4f(screenX, screenY, 1f, 1f)
+                        var worldPosFar = screenPosFar * projection.invert() * view.invert()
+                        worldPosFar *= (1f / worldPosFar.w)
+
+                        val screenPosNear = Vector4f(screenX, screenY, -1f, 1f)
+                        var worldPosNear = screenPosNear * projection.invert() * view.invert()
+                        worldPosNear *= (1f / worldPosNear.w)
+
+                        properties.invoke(ActionCommand(
+                                Vector3f(worldPosNear.x, worldPosNear.y, worldPosNear.z),
+                                Vector3f(worldPosFar.x, worldPosFar.y, worldPosFar.z)
+                        ))
+                    }
+                }
+                event.stopPropagation = true
+            }
         }
     }
 }

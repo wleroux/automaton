@@ -14,8 +14,6 @@ import com.github.wleroux.automaton.data.type.KEYBOARD
 import com.github.wleroux.automaton.data.type.MOUSE
 import com.github.wleroux.automaton.system.worldgenerator.GenerateWorldCommand.TileSettings
 import com.github.wleroux.keact.api.Component
-import com.github.wleroux.keact.api.component.layout.Direction
-import com.github.wleroux.keact.api.component.layout.LayoutBuilder.Companion.layout
 import com.github.wleroux.keact.api.dispatch
 import com.github.wleroux.keact.api.event.Event
 import com.github.wleroux.keact.api.event.Phase

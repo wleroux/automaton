@@ -26,7 +26,7 @@ class CameraMovementSystem: System {
                 val dt = event.dt.toFloat() / TimeUnit.MILLISECONDS.convert(1, TimeUnit.SECONDS).toFloat()
 
                 // Zoom
-                game[CAMERA].zoomLevel = min(max(10f, game[CAMERA].zoomLevel + mouse.yoffset.toFloat() * dt * 250f), 100f)
+                game[CAMERA].zoomLevel = min(max(10f, game[CAMERA].zoomLevel - mouse.yoffset.toFloat() * dt * 250f), 100f)
                 mouse.yoffset = 0.0
 
                 // Rotation
