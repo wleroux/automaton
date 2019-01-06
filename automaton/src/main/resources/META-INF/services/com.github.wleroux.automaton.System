@@ -1,0 +1,3 @@
+com.github.wleroux.automaton.system.logger.EventLoggerSystem
+com.github.wleroux.automaton.system.worldgenerator.WorldGeneratorSystem
+com.github.wleroux.automaton.system.camera.CameraMovementSystem

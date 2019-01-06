@@ -17,6 +17,7 @@ data class Matrix4f(
       0f, 0f, 1f, 0f,
       0f, 0f, 0f, 1f
     )
+    operator fun invoke(transform: Transform) = invoke(transform.position, transform.rotation, transform.scale)
     operator fun invoke(position: Vector3f = Vector3f(0f, 0f, 0f), rotation: Quaternion = Quaternion(1f, 0f, 0f, 0f), scale: Vector3f = Vector3f(1f, 1f, 1f)): Matrix4f {
       val wx = rotation.w * rotation.x
       val wy = rotation.w * rotation.y

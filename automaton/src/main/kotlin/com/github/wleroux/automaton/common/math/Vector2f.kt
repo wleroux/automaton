@@ -24,6 +24,10 @@ data class Vector2f(var x: Float, var y: Float) {
   }
 
   operator fun plus(o: Vector2f) = Vector2f(this.x + o.x, this.y + o.y)
+  operator fun plusAssign(o: Vector2f) {
+    this.x += o.x
+    this.y += o.y
+  }
   operator fun minus(o: Vector2f) = Vector2f(this.x - o.x, this.y - o.y)
   operator fun times(mat4: Matrix4f): Vector2f {
     return Vector2f(

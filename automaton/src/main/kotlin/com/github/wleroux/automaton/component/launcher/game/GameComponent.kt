@@ -4,13 +4,18 @@ import com.github.wleroux.automaton.component.launcher.game.event.GameTickedEven
 import com.github.wleroux.automaton.component.launcher.game.menu.GameMenuBuilder.Companion.gameMenu
 import com.github.wleroux.automaton.component.launcher.game.viewport.GameViewportBuilder.Companion.gameViewport
 import com.github.wleroux.automaton.component.window.event.*
-import com.github.wleroux.automaton.system.worldgenerator.GenerateWorld
+import com.github.wleroux.automaton.system.worldgenerator.GenerateWorldCommand
 import com.github.wleroux.ecs.api.Game
-import com.github.wleroux.automaton.Plugin
-import com.github.wleroux.automaton.data.ConiferousTreeTile
-import com.github.wleroux.automaton.data.DeciduousTreeTile
-import com.github.wleroux.automaton.system.worldgenerator.TileSettings
+import com.github.wleroux.automaton.System
+import com.github.wleroux.automaton.common.math.Vector2f
+import com.github.wleroux.automaton.data.*
+import com.github.wleroux.automaton.data.type.CAMERA
+import com.github.wleroux.automaton.data.type.KEYBOARD
+import com.github.wleroux.automaton.data.type.MOUSE
+import com.github.wleroux.automaton.system.worldgenerator.GenerateWorldCommand.TileSettings
 import com.github.wleroux.keact.api.Component
+import com.github.wleroux.keact.api.component.layout.Direction
+import com.github.wleroux.keact.api.component.layout.LayoutBuilder.Companion.layout
 import com.github.wleroux.keact.api.dispatch
 import com.github.wleroux.keact.api.event.Event
 import com.github.wleroux.keact.api.event.Phase
@@ -26,14 +31,22 @@ class GameComponent: Component<GameComponent.GameState, GameComponent.GameProper
     )
 
     private lateinit var game: Game
-    private lateinit var plugins: List<Plugin>
+    private lateinit var systems: List<System>
     override fun componentDidMount() {
         this.dispatch(RequestFocus)
         game = Game()
-        plugins = ServiceLoader.load(Plugin::class.java).toList()
-        plugins.forEach { it.initialize(game) }
+        game[KEYBOARD] = Keyboard()
+        game[MOUSE] = Mouse()
+        game[CAMERA] = Camera(
+                center = Vector2f(0f, 0f),
+                rotationAngle = 0f,
+                zoomLevel = 50f
+        )
 
-        game.invoke(GenerateWorld(
+        systems = ServiceLoader.load(System::class.java).toList()
+        systems.forEach { it.initialize(game) }
+
+        game.invoke(GenerateWorldCommand(
                 Random.nextLong(),
                 50, 50,
                 mapOf(
@@ -50,7 +63,7 @@ class GameComponent: Component<GameComponent.GameState, GameComponent.GameProper
     }
 
     override fun componentWillUnmount() {
-        plugins.forEach { it.terminate() }
+        systems.forEach { it.terminate() }
     }
 
     override fun asNodes() = listOf(GameContext.provider {
@@ -77,7 +90,6 @@ class GameComponent: Component<GameComponent.GameState, GameComponent.GameProper
                 dispatch(RequestFocus)
                 event.stopPropagation = true
             }
-
             is KeyStroke -> {
                 val keyStroke = event.data as KeyStroke
                 if (keyStroke.action == KeyAction.RELEASED) {

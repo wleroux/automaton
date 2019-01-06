@@ -55,6 +55,7 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
         glfwSetWindowCloseCallback(window, this::windowCloseCallback)
         glfwSetCursorPosCallback(window, this::cursorPosCallback)
         glfwSetMouseButtonCallback(window, this::mouseButtonCallback)
+        glfwSetScrollCallback(window, this::mouseScrollCallback)
 
         glfwMakeContextCurrent(window)
         glfwSwapInterval(1)
@@ -182,6 +183,10 @@ class WindowComponent: Component<Unit, List<Node<*, *>>>(Unit) {
                     (mods and GLFW_MOD_SUPER) != 0
             ))
         }
+    }
+
+    @Suppress("UNUSED_PARAMETER") private fun mouseScrollCallback(window: Long, xoffset: Double, yoffset: Double) {
+        findComponentAt(mouseX, mouseY)?.dispatch(MouseScroll(xoffset, yoffset))
     }
 
     @Suppress("UNUSED_PARAMETER")

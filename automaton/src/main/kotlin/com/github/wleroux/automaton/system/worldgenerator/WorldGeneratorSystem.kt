@@ -4,17 +4,17 @@ import com.github.wleroux.bus.api.BusSubscription
 import com.github.wleroux.bus.api.message.MessageHandlerBuilder.Companion.messageHandler
 import com.github.wleroux.bus.api.message.command.DefaultCommandHandlerBuilder.Companion.commandHandler
 import com.github.wleroux.ecs.api.Game
-import com.github.wleroux.automaton.Plugin
+import com.github.wleroux.automaton.System
 import com.github.wleroux.automaton.common.math.perlin_noise
-import com.github.wleroux.automaton.data.TILES
+import com.github.wleroux.automaton.data.type.TILES
 import com.github.wleroux.automaton.data.TileMap
 import kotlin.random.Random
 
-class WorldGeneratorPlugin: Plugin {
+class WorldGeneratorSystem: System {
     private lateinit var subscription: BusSubscription
     override fun initialize(game: Game) {
         subscription = game.subscribe(messageHandler {
-            +commandHandler { cmd: GenerateWorld ->
+            +commandHandler { cmd: GenerateWorldCommand ->
                 game[TILES] = TileMap(cmd.width, cmd.height)
 
                 val random = Random(cmd.seed)

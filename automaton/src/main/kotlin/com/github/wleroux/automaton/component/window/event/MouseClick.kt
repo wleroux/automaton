@@ -10,3 +10,4 @@ data class MouseClick(
     val altDown: Boolean,
     val metaDown: Boolean
 )
+
